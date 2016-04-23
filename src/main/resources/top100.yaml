@@ -3,239 +3,270 @@ caption: "100 наиболее распостранных слов голлан�
 from: "russian"
 to: "netherlands"
 version: "0.1"
-number: 96
 words:
   - spelling: "de"
     translation: "наиболее распостраненный определенный артикль"
     tip: "чаще всего для мужского рода"
-    index: 1
   - spelling: "van"
     translation: "из"
     tip: ""
-    index: 2
   - spelling: "een"
-    translation: "неопределенный артикль"
+    translation: "неопределенный артикль;один"
     tip:  "такое же написание используется еще в значении \"один\""
-    index: 3
   - spelling: "het"
     translation: "Это; Mенее распостраненный определенный артикль"
     tip: "Чаще всего для женского рода или в уменьшительно-ласкательный формах"
-    index: 4
   - spelling: "en"
     translation: "и"
     tip: ""
-    index: 5
   - spelling: "in"
     translation: "в"
     tip: ""
-    index: 5
   - spelling: "is"
     translation: "есть"
     tip: "в русском языке пропускается: вместо: Я есть человек - просто: Я человек"
   - spelling: "dat"
     translation: "этот"
     tip: ""
-    index: 6
   - spelling: "op"
     translation: "на"
     tip: ""
-    index: 7
   - spelling: "te"
     translation: "чтобы"
     tip: ""
-    index: 8
   - spelling: "zijn"
     translation: "они или множественное число глагола is"
     tip: ""
-    index: 9
   - spelling: "voor"
     translation: "для"
     tip: ""
-    index: 10
   - spelling: "met"
     translation: "c\, вместе с"
     tip: ""
-    index: 11
   - spelling: "met"
     translation: "c\, вместе с"
     tip: ""
-    index: 12
   - spelling: "die"
     translation: "этот\, который\, тот кто"
     tip: ""
-    index: 13
   - spelling: "niet"
     translation: "не"
     tip: ""
-    index: 14
   - spelling: "aan"
     translation: "позиция в пространстве: указывает на"
     tip: ""
-    index: 15
   - spelling: "er"
     translation: "там\, тут"
     tip: ""
-    index: 16
   - spelling: "om"
     translation: "вокруг\, около"
     tip: ""
-    index: 17
   - spelling: "ook"
     translation: "тоже"
     tip: ""
-    index: 18
   - spelling: "als"
     translation: "как\, в качестве\, будучи; будто\, точно\, словно; когда; если"
     tip: ""
-    index: 19
   - spelling: "dan"
     translation: "чем"
     tip: ""
-    index: 20
   - spelling: "maar"
     translation: "но"
     tip: ""
-    index: 21
   - spelling: "maar"
     translation: "но"
     tip: ""
-    index: 22
   - spelling: "bij"
     translation: "поблизости\, рядом; в пределах определенного отрезка времени"
     tip: ""
-    index: 23
   - spelling: "of"
     translation: "или"
     tip: ""
-    index: 24
   - spelling: "uit"
     translation: "вне\, из\, наружу"
     tip: ""
-    index: 25
   - spelling: "nog"
     translation: "еще"
     tip: ""
-    index: 26
   - spelling: "worden"
     translation: "быть; становиться; попасть в; метить в; норовить в; обернуться"
     tip: ""
-    index: 27
   - spelling: "door"
     translation: "через; сквозь"
     tip: ""
-    index: 28
   - spelling: "door"
     translation: "через; сквозь"
     tip: ""
-    index: 29
   - spelling: "naar"
     translation: "в направлении"
     tip: ""
-    index: 30
   - spelling: "tot"
     translation: "до"
     tip: ""
-    index: 31
   - spelling: "ze"
     translation: "она\, ее"
     tip: ""
-    index: 32
   - spelling: "over"
     translation: "над\, через\, свыше"
     tip: ""
-    index: 33
   - spelling: "hij"
     translation: "он"
     tip: ""
-    index: 34
   - spelling: "in"
     translation: "он"
     tip: ""
-    index: 35
   - spelling: "meer"
     translation: "больше"
     tip: ""
-    index: 36
   - spelling: "jaar"
     translation: "год"
     tip: ""
-    index: 37
   - spelling: "was"
     translation: "был"
     tip: ""
-    index: 38
   - spelling: "ik"
     translation: "я"
     tip: ""
-    index: 39
   - spelling: "kan"
     translation: "может"
     tip: ""
-    index: 40
   - spelling: "je"
     translation: "ты\, тебя"
     tip: ""
-    index: 41
   - spelling: "zich"
-    translation: "ебе\, себя"
+    translation: "себе, себя"
     tip: ""
-    index: 41
-
-
-
-zich
-al
-hebben
-geen
-hun
-we
-wat
-Een
-Maar
-werd
-moet
-wel
-kunnen
-Dat
-nu
-dit
-deze
-zal
-Ik
-veel
-zo
-En
-andere
-nieuwe
-zou
-twee
-moeten
-onder
-eerste
-haar
-Van
-wil
-tegen
-men
-mensen
-gaat
-tussen
-grote
-waar
-goed
-maken
-dus
-alleen
-Hij
-Op
-frank
-ons
-u
-daar
-na
-had
-gaan
-alle
-Als
-Er
-één
+  - spelling: "al"
+    translation: "весь, вся, всё, все; всякий, каждый"
+    tip: ""
+  - spelling: "hebben"
+    translation: "иметь"
+    tip: ""
+  - spelling: "geen"
+    translation: "ни одного"
+  - spelling: "hun"
+    translation: "им, их"
+    tip: ""
+  - spelling: "we"
+    translation: "мы"
+    tip: ""
+  - spelling: "wat"
+    translation: "что"
+    tip: ""
+  - spelling: "wat"
+    translation: "что"
+    tip: ""
+  - spelling: "maar"
+    translation: "но"
+    tip: ""
+  - spelling: "moeten"
+    translation: "должен"
+    tip: ""
+  - spelling: "wel"
+    translation: "хорошо, пожалуй, правда"
+    tip: ""
+  - spelling: "kunnen"
+    translation: "мочь"
+    tip: ""
+  - spelling: "kunnen"
+    translation: "мочь"
+    tip: ""
+  - spelling: "nu"
+    translation: "сейчас"
+    tip: ""
+  - spelling: "dit"
+    translation: "этот, тот"
+    tip: ""
+  - spelling: "zullen"
+    translation: "собираться"
+    tip: ""
+  - spelling: "zullen"
+    translation: "собираться"
+    tip: ""
+  - spelling: "veel"
+    translation: "многие"
+    tip: ""
+  - spelling: "zo"
+    translation: "так что"
+    tip: ""
+  - spelling: "andere"
+    translation: "другой"
+    tip: ""
+  - spelling: "andere"
+    translation: "другой"
+    tip: ""
+  - spelling: "nieuwe"
+    translation: "новый"
+    tip: ""
+  - spelling: "zou"
+    translation: "возможно б"
+    tip: ""
+  - spelling: "twee"
+    translation: "два"
+    tip: ""
+  - spelling: "onder"
+    translation: "другой"
+    tip: ""
+  - spelling: "eerste"
+    translation: "первый"
+    tip: ""
+  - spelling: "haar"
+    translation: "ее"
+    tip: ""
+  - spelling: "wil"
+    translation: "воля"
+    tip: ""
+  - spelling: "tegen"
+    translation: "против, вопреки"
+    tip: ""
+  - spelling: "men"
+    translation: "человек"
+    tip: ""
+  - spelling: "mensen"
+    translation: "люди"
+    tip: ""
+  - spelling: "gaan"
+    translation: "идти, ходить, ехать, собираться"
+    tip: ""
+  - spelling: "tussen"
+    translation: "между"
+    tip: ""
+  - spelling: "grote"
+    translation: "большой"
+    tip: ""
+  - spelling: "waar"
+    translation: "где, товар"
+    tip: ""
+  - spelling: "goed"
+    translation: "хороший"
+    tip: ""
+  - spelling: "maken"
+    translation: "делать, совершать"
+    tip: ""
+  - spelling: "dus"
+    translation: "следовательно; итак; стало быть;"
+    tip: ""
+  - spelling: "alleen"
+    translation: "один, один-одинёшенек, только, единственно"
+    tip: ""
+  - spelling: "frank"
+    translation: "бесстрашный, мужественный"
+    tip: ""
+  - spelling: "ons"
+    translation: "наш"
+    tip: ""
+  - spelling: "u"
+    translation: "вы"
+    tip: ""
+  - spelling: "daar"
+    translation: "там, так как, вон"
+    tip: ""
+  - spelling: "na"
+    translation: "вслед за, после, спустя, поблизости"
+    tip: ""
+  - spelling: "alle"
+    translation: "вслед за, после, спустя, поблизости"
+    tip: ""
+  - spelling: "alle"
+    translation: "вслед за, после, спустя, поблизости"
+    tip: ""
