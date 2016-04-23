@@ -1,0 +1,31 @@
+- Upload new dictionary | Dima
+    json rest api + script that passes it to app engine
+    api:
+    - create dictionary
+    - script
+        - parse dictionary file
+        - validate
+        - call create dictionary api
+- Login/logout
+    - html | Vadim
+    - controller | Vadim
+    - rest endpoint | Dima
+- Access control for admin functions | Dima
+- View dictionaries
+    - html | Vadim
+    - controller | Vadim
+    - rest endpoint | Dima
+    - dao | Dima
+    - automated tests | Dima
+- View dictionary details
+    - html | Vadim
+    - controller | Vadim
+    - rest endpoint | Dima
+    - dao | Dima
+    - automated tests | Dima
+- Check word
+    - html | Vadim
+    - controller | Vadim
+    - rest endpoint | Dima
+    - dao | Dima
+    - automated tests | Dima
