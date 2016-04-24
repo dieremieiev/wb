@@ -1,12 +1,23 @@
 <!doctype html>
-<html lang="en" ng-app>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>WB</title>
-  <!--<link rel="stylesheet" href="css/app.css">-->
-  <script src="bower_components/angular/angular.js"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 </head>
-<body>
-  <p>Nothing here {{'yet' + '!'}}</p>
+<body ng-app="wb" layout="column" ng-cloak>
+  <md-toolbar layout="row">
+    <h1>WB</h1>
+  </md-toolbar>
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-aria/angular-aria.js"></script>
+  <script src="bower_components/angular-messages/angular-messages.js"></script>
+  <script src="bower_components/angular-material/angular-material.js"></script>
+  <script type="text/javascript">
+    angular.module('wb', ['ngMaterial']);
+  </script>
 </body>
 </html>

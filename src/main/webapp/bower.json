@@ -4,7 +4,11 @@
     "tvvlab"
   ],
   "dependencies": {
-    "angular": "1.5.5"
+    "angular": "1.5.5",
+    "angular-animate": "1.5.5",
+    "angular-aria": "1.5.5",
+    "angular-messages": "1.5.5",
+    "angular-material": "1.0.7"
   },
   "description": "Wordbook",
   "homepage": "https://github.com/dieremieiev/wb",
@@ -18,8 +22,5 @@
   "license": "GPL-3.0",
   "main": "index.js",
   "name": "wb",
-  "private": true,
-  "resolutions": {
-    "angular": "1.5.5"
-  }
+  "private": true
 }
