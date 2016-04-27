@@ -5,10 +5,22 @@
   <title>WB</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+  <link rel="stylesheet" href="bower_components/angular-material-icons/angular-material-icons.css">
+  <link rel="stylesheet" href="css/app.css">
 </head>
-<body ng-app="wb" layout="column" ng-cloak>
+<body ng-app="app" ng-controller="AppController" ng-cloak>
   <md-toolbar layout="row">
-    <h1>WB</h1>
+    <md-button>
+      <h1>WB</h1>
+    </md-button>
+    <span flex></span>
+    <md-select class="w60p" placeholder="{{ml.selectDictionary}}" ng-model="model.dictionaryId" ng-change="setDictionary()">
+      <md-option ng-value="dictionary.id" ng-repeat="dictionary in model.dictionaries">{{dictionary.name}}</md-option>
+    </md-select>
+    <span flex></span>
+    <md-button>
+      <ng-md-icon icon="logout" size="48"></ng-md-icon>
+    </md-button>
   </md-toolbar>
 
   <script src="bower_components/angular/angular.js"></script>
@@ -16,8 +28,7 @@
   <script src="bower_components/angular-aria/angular-aria.js"></script>
   <script src="bower_components/angular-messages/angular-messages.js"></script>
   <script src="bower_components/angular-material/angular-material.js"></script>
-  <script type="text/javascript">
-    angular.module('wb', ['ngMaterial']);
-  </script>
+  <script src="bower_components/angular-material-icons/angular-material-icons.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,12 @@
+ng-md-icon { height: auto; }
+
+md-select .md-select-value.md-select-placeholder,
+md-select:not([disabled]):focus .md-select-value,
+md-select:not([disabled]):focus .md-select-value.md-select-placeholder {
+  border-bottom-color: rgba(0,0,0,0.12);
+  border-bottom-width: 1px;
+  color: rgba(255,255,255,0.87);
+  padding-bottom: 1px;
+}
+
+.w60p { width: 60%; }
