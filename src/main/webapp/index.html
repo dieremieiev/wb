@@ -14,7 +14,7 @@
       <h1>WB</h1>
     </md-button>
     <span flex></span>
-    <md-select class="w60p" placeholder="{{ml.selectDictionary}}" ng-model="model.dictionary.id" ng-change="setDictionary()" ng-show="model.dictionaries">
+    <md-select class="w60p" placeholder="{{ml.selectDictionary}}" ng-model="model.dictionary.id" ng-change="selectDictionary()" ng-show="model.dictionaries">
       <md-option ng-value="dictionary.id" ng-repeat="dictionary in model.dictionaries">{{dictionary.name}}</md-option>
     </md-select>
     <span flex></span>
@@ -22,6 +22,8 @@
       <ng-md-icon icon="logout" size="48"></ng-md-icon>
     </md-button>
   </md-toolbar>
+
+  {{model.error}}
 
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-animate/angular-animate.js"></script>

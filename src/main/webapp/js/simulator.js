@@ -1,11 +1,7 @@
-function Simulator() {
-  this.response = null
-}
+function Simulator() {}
 
-Simulator.prototype.handle = function(request) {
-  if (request == null) { return null }
-
-  switch (request.action) {
+Simulator.prototype.handle = function(action, data) {
+  switch (action) {
       case 'checkWord'       : return this.handleCheckWord()
       case 'getUserState'    : return this.handleGetUserState()
       case 'selectDictionary': return this.handleSelectDictionary()
@@ -81,20 +77,8 @@ Simulator.prototype.handleSelectDictionary = function() {
   }
 }
 
-Simulator.prototype.post = function(url, request) {
-  this.response = this.handle(request)
-
-  return this
-}
-
-Simulator.prototype.then = function(success, error) {
+Simulator.prototype.post = function(action, data, callback) {
   var self = this;
 
-  setTimeout(function() {
-    if (self.response) {
-      success({ data: self.response })
-    } else {
-      error({ data: self.response })
-    }
-  }, 5000)
+  setTimeout(function() { callback(self.handle(action, data)) }, 5000)
 }
