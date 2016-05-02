@@ -17,7 +17,7 @@
     - rest endpoint | Dima
     - dao | Dima
     - automated tests | Dima
-- View dictionary details
+- Choose dictionary
     - html | Vadim
     - controller | Vadim
     - rest endpoint | Dima

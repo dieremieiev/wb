@@ -1,9 +1,10 @@
 # Model
 
-## User
+## UserState
 1. id: string
 2. email: string
-id => email
+3. dictionary: string
+id => {}
 
 ## Dictionary
 1. id: string
@@ -17,43 +18,34 @@ id => {}
 
 ## Level
 1. id: string
+2. dictionaryId: string
 2. number: int
 3. delay: int
 dictionary.id/level.id => {}
 
 ## Word
 1. id: string
-2. spelling: string
-3. translation: string
-4. tip
-5. index
+2. dictionaryId: string
+3. spelling: string
+4. translation: string
+5. tip: string
 dictionary.id/word.id => spelling, translation, tip
 
 ## User dictionary
-1. id: string
-2. name: string
-3. caption: string
-4. language from: string
-5. language to: string
-6. version: string
-8. num words: int
-9. num shown words: int
+1. userId: string
+2. dictionaryId: string
+3. words: int
+4. active: int
+5. learned: int
+5. nextWord: string 
 user.id/dictionary.id => {}
 
-## User level
-1. id: string
-2. number: string
-3. delay: int
-4. num words: int
-user.id/dictionary.id/level.id => {}
-
-
 ## User Word
-1. id: string
-2. spelling: string
-3. translation: string
-4. level: int
-5. next show date: date
+1. userId: string
+2. dictionaryId: string
+3. wordId: string
+2. level: int
+3. checkDate: date
 user.id/dictionary.id/word.id => {}
 
 
