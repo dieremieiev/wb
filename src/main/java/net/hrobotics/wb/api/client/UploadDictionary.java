@@ -59,6 +59,7 @@ public class UploadDictionary {
         dictionary.setName((String) dictionaryData.get("name"));
         dictionary.setTo((String) dictionaryData.get("to"));
         dictionary.setVersion((String) dictionaryData.get("version"));
+        dictionary.setLastLevel((Integer) dictionaryData.get("lastLevel"));
         dictionaryDocument.setDictionary(dictionary);
         List<Word> words = new ArrayList<>();
         for (Map<String, Object> wordData : (List<Map<String, Object>>) dictionaryDocumentData.get("words")) {
@@ -71,14 +72,14 @@ public class UploadDictionary {
             words.add(word);
         }
         dictionaryDocument.setWords(words);
+        dictionary.setNumber(words.size());
         List<Map<String, Object>> levelsData = (List<Map<String, Object>>) dictionaryDocumentData.get("levels");
         List<Level> levels = new ArrayList<>();
         for (Map<String, Object> levelData : levelsData) {
             Level level = new Level();
-            level.setId((String) levelData.get("id"));
             level.setDictionaryId((String) levelData.get("dictionaryId"));
-            level.setDelay((int) levelData.get("delay"));
-            level.setNumber((int) levelData.get("number"));
+            level.setDelay((Integer) levelData.get("delay"));
+            level.setLevel((Integer) levelData.get("level"));
             levels.add(level);
         }
         dictionaryDocument.setLevels(levels);

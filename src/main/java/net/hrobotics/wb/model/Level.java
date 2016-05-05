@@ -9,27 +9,17 @@ package net.hrobotics.wb.model;
  * dictionary.id/level.id => {}
  */
 public class Level {
-    private String id;
+    private Integer level;
     private String dictionaryId;
-    private Integer number;
     private Integer delay;
 
-    public Level(String id, String dictionaryId, Integer number, Integer delay) {
-        this.id = id;
+    public Level(String dictionaryId, Integer level, Integer delay) {
         this.dictionaryId = dictionaryId;
-        this.number = number;
+        this.level = level;
         this.delay = delay;
     }
 
     public Level() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getDictionaryId() {
@@ -40,12 +30,12 @@ public class Level {
         this.dictionaryId = dictionaryId;
     }
 
-    public Integer getNumber() {
-        return number;
+    public Integer getLevel() {
+        return level;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public Integer getDelay() {

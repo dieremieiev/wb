@@ -16,13 +16,13 @@ public class UserWord {
     private String dictionaryId;
     private String wordId;
     private Integer level;
-    private Date checkDate;
+    private Long checkDate;
 
     public UserWord(String userId,
                     String dictionaryId,
                     String wordId,
                     Integer level,
-                    Date checkDate) {
+                    Long checkDate) {
         this.userId = userId;
         this.dictionaryId = dictionaryId;
         this.wordId = wordId;
@@ -65,11 +65,11 @@ public class UserWord {
         this.level = level;
     }
 
-    public Date getCheckDate() {
+    public long getCheckDate() {
         return checkDate;
     }
 
-    public void setCheckDate(Date checkDate) {
+    public void setCheckDate(Long checkDate) {
         this.checkDate = checkDate;
     }
 }

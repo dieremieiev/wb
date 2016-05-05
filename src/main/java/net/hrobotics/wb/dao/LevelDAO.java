@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static net.hrobotics.wb.dao.DAOUtils.getIntProperty;
 import static net.hrobotics.wb.dao.DAOUtils.removeChildren;
+import static net.hrobotics.wb.dao.DictionaryDAO.DICTIONARY_KIND;
 
 public class LevelDAO {
     private static DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
@@ -19,24 +21,42 @@ public class LevelDAO {
     }
 
     public static List<Level> putLevels(Dictionary dictionary, List<Level> levels) {
-        List<Entity> wordsEntities = new ArrayList<>();
+        List<Entity> entities = new ArrayList<>();
         for (Level level : levels) {
-            String id = level.getId();
-            if (id == null) {
-                id = UUID.randomUUID().toString();
-                level.setId(id);
-            }
-            level.setDictionaryId(dictionary.getId());
-            Key parentKey = new KeyFactory.Builder(DictionaryDAO.DICTIONARY_KIND,
-                    dictionary.getId()).getKey();
-            Entity entity = new Entity(LEVEL_KIND, id, parentKey);
-            entity.setProperty("id", level.getId());
-            entity.setProperty("dictionaryId", dictionary.getId());
-            entity.setProperty("number", level.getNumber());
-            entity.setProperty("delay", level.getDelay());
-            wordsEntities.add(entity);
+            String dictionaryId = dictionary.getId();
+            level.setDictionaryId(dictionaryId);
+            Entity entity = toEntity(level);
+            entities.add(entity);
         }
-        datastoreService.put(wordsEntities);
+        datastoreService.put(entities);
         return levels;
+    }
+
+    private static Entity toEntity(Level level) {
+        String dictionaryId = level.getDictionaryId();
+        Key parentKey = new KeyFactory.Builder(DICTIONARY_KIND,
+                dictionaryId).getKey();
+        Entity entity = new Entity(LEVEL_KIND, level.getLevel(), parentKey);
+        entity.setProperty("dictionaryId", dictionaryId);
+        entity.setProperty("level", level.getLevel());
+        entity.setProperty("delay", level.getDelay());
+        return entity;
+    }
+
+    private static Level toLevel(Entity entity) {
+        Level level = new Level();
+        level.setDictionaryId((String) entity.getProperty("dictionaryId"));
+        level.setLevel(getIntProperty(entity, "level"));
+        level.setDelay(getIntProperty(entity, "delay"));
+        return level;
+    }
+
+    public static Level getLevel(String dictionaryId, int level) {
+        try {
+            return toLevel(datastoreService.get(new KeyFactory.Builder(DICTIONARY_KIND, dictionaryId).addChild(LEVEL_KIND, level).getKey()));
+        } catch (EntityNotFoundException e) {
+            throw new IllegalArgumentException(
+                    "level: " + level + " for dictionary id: " + dictionaryId + " is not found");
+        }
     }
 }
