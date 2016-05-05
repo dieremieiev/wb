@@ -1,6 +1,28 @@
+/*****************************************************************************
+ * Lifecycle
+ ****************************************************************************/
+
 function Simulator() {}
 
-Simulator.prototype.handle = function(action, data) {
+
+/*****************************************************************************
+ * Public
+ ****************************************************************************/
+
+Simulator.prototype.post = function(action, data, callback)
+{
+  var self = this
+
+  setTimeout(function() { callback(self.handle(action, data)) }, 1000)
+}
+
+
+/*****************************************************************************
+ * Private
+ ****************************************************************************/
+
+Simulator.prototype.handle = function(action, data)
+{
   switch (action) {
       case 'checkWord'       : return this.handleCheckWord()
       case 'getUserState'    : return this.handleGetUserState()
@@ -10,7 +32,8 @@ Simulator.prototype.handle = function(action, data) {
   return null
 }
 
-Simulator.prototype.handleCheckWord = function() {
+Simulator.prototype.handleCheckWord = function()
+{
   return {
     'result': 0,
     'body': {
@@ -26,14 +49,15 @@ Simulator.prototype.handleCheckWord = function() {
         }
       },
       'evaluation': {
-          'result': 0,
-          'spelling': 'xxx'
+        'result': 0,
+        'spelling': 'xxx'
       }
     }
   }
 }
 
-Simulator.prototype.handleGetUserState = function() {
+Simulator.prototype.handleGetUserState = function()
+{
   return {
     'result': 0,
     'body': {
@@ -53,12 +77,14 @@ Simulator.prototype.handleGetUserState = function() {
         { 'id': '8a6d2093-57fb-41be-9517-fb4cad8229c2', 'name': 'Словарь: Числа' },
         { 'id': '4a0c7667-d971-45d0-8309-0e475a063164', 'name': 'Словарь: Дом' },
         { 'id': '6eff9378-beb1-4527-b8c4-9354396a2c32', 'name': 'Словарь: Транспорт' }
-      ]
+      ],
+      'email': 'xxx@yyy.zzz'
     }
   }
 }
 
-Simulator.prototype.handleSelectDictionary = function() {
+Simulator.prototype.handleSelectDictionary = function()
+{
   return {
     'result': 0,
     'body': {
@@ -75,10 +101,4 @@ Simulator.prototype.handleSelectDictionary = function() {
       }
     }
   }
-}
-
-Simulator.prototype.post = function(action, data, callback) {
-  var self = this;
-
-  setTimeout(function() { callback(self.handle(action, data)) }, 5000)
 }

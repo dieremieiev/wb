@@ -21,7 +21,7 @@
     "tests"
   ],
   "license": "GPL-3.0",
-  "main": "js/main.js",
+  "main": "js/boot.js",
   "name": "wb",
   "private": true
 }

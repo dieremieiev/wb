@@ -1,8 +1,23 @@
+/*****************************************************************************
+ * CSS
+ ****************************************************************************/
+
+.button { padding: 0 1em; }
+
+.error { padding: 1em 0; text-align: center; }
+
+.hauto { height: auto; }
+
+.w60p { width: 60%; }
+
+
+/*****************************************************************************
+ * Angular patches
+ ****************************************************************************/
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
-
-ng-md-icon { height: auto; }
 
 md-select .md-select-value.md-select-placeholder,
 md-select:not([disabled]):focus .md-select-value,
@@ -12,5 +27,3 @@ md-select:not([disabled]):focus .md-select-value.md-select-placeholder {
   color: rgba(255,255,255,0.87);
   padding-bottom: 1px;
 }
-
-.w60p { width: 60%; }
