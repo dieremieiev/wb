@@ -1,5 +1,14 @@
 package net.hrobotics.wb.model;
 
+/**
+ * ## Word
+ * 1. id: string
+ * 2. dictionaryId: string
+ * 3. spelling: string
+ * 4. translation: string
+ * 5. tip: string
+ * dictionary.id/word.id => spelling, translation, tip
+ */
 public class Word {
     private String id;
     private String dictionaryId;

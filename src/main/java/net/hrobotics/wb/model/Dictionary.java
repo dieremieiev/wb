@@ -1,5 +1,16 @@
 package net.hrobotics.wb.model;
 
+/**
+ * ## Dictionary
+ * 1. id: string
+ * 2. name: string
+ * 3. caption: string
+ * 4. from: string
+ * 5. to: string
+ * 6. version: string
+ * 7. number: int
+ * id => {}
+ */
 public class Dictionary {
     private String id;
     private String name;
@@ -7,6 +18,7 @@ public class Dictionary {
     private String from;
     private String to;
     private String version;
+    private Integer number;
 
     public String getId() {
         return id;
@@ -54,5 +66,13 @@ public class Dictionary {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 }
