@@ -29,10 +29,14 @@ import java.util.List;
 public class UserStateDTO {
     private CurrentDictionaryDTO dictionary;
     private List<DictionaryDTO> dictionaries;
+    private String email;
 
-    public UserStateDTO(CurrentDictionaryDTO dictionary, List<DictionaryDTO> dictionaries) {
+    public UserStateDTO(CurrentDictionaryDTO dictionary,
+                        List<DictionaryDTO> dictionaries,
+                        String email) {
         this.dictionary = dictionary;
         this.dictionaries = dictionaries;
+        this.email = email;
     }
 
     public UserStateDTO() {
@@ -52,5 +56,13 @@ public class UserStateDTO {
 
     public void setDictionaries(List<DictionaryDTO> dictionaries) {
         this.dictionaries = dictionaries;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

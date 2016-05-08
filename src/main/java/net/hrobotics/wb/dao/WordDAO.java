@@ -14,7 +14,7 @@ import static net.hrobotics.wb.dao.DictionaryDAO.DICTIONARY_KIND;
 
 public class WordDAO {
     private static DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
-    private static final String WORD_KIND = "word";
+    static final String WORD_KIND = "word";
 
     public static List<Word> putWords(Dictionary dictionary, List<Word> words) {
         List<Entity> wordsEntities = new ArrayList<>();
@@ -48,10 +48,13 @@ public class WordDAO {
     }
 
     public static List<Word> getWords(String dictionaryId, int limit, int offset) {
+        FetchOptions fetchOptions = FetchOptions.Builder.withDefaults();
+        if(limit > 0 && offset >=0) {
+            fetchOptions.limit(limit).offset(offset);
+        }
         return toWords(datastoreService.prepare(
                 new Query(WORD_KIND).setAncestor(key(DICTIONARY_KIND, dictionaryId)))
-                .asIterable(FetchOptions.Builder.withDefaults()
-                        .limit(limit).offset(offset)));
+                .asIterable(fetchOptions));
     }
 
     private static List<Word> toWords(Iterable<Entity> entities) {

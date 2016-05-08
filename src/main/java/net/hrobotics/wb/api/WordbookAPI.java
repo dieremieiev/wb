@@ -7,21 +7,18 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 import net.hrobotics.wb.api.dto.*;
-import net.hrobotics.wb.dao.DictionaryDAO;
-import net.hrobotics.wb.dao.UserDAO;
-import net.hrobotics.wb.dao.WordDAO;
-import net.hrobotics.wb.model.Dictionary;
-import net.hrobotics.wb.model.UserDictionary;
-import net.hrobotics.wb.model.UserState;
-import net.hrobotics.wb.model.Word;
+import net.hrobotics.wb.dao.*;
+import net.hrobotics.wb.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static net.hrobotics.wb.dao.DAOUtils.NEVER;
 import static net.hrobotics.wb.dao.DictionaryDAO.getDictionary;
-import static net.hrobotics.wb.dao.UserDAO.getUserDictionary;
-import static net.hrobotics.wb.dao.UserDAO.putUserState;
+import static net.hrobotics.wb.dao.UserDictionaryDAO.getUserDictionary;
+import static net.hrobotics.wb.dao.UserDictionaryDAO.putUserDictionary;
+import static net.hrobotics.wb.dao.UserStateDAO.putUserState;
 import static net.hrobotics.wb.dao.WordDAO.getWord;
 
 @Api(name = "wordbook",
@@ -33,6 +30,8 @@ import static net.hrobotics.wb.dao.WordDAO.getWord;
                 ownerName = "wb.hrobotics.net"))
 public class WordbookAPI {
     private static final Logger LOG = Logger.getLogger(WordbookAPI.class.getName());
+    public static final int WITHOUT_LIMIT = -1;
+    public static final int WITHOUT_OFFSET = -1;
 
     @ApiMethod(
             name = "getUserState",
@@ -57,7 +56,7 @@ public class WordbookAPI {
     public ResponseDTO selectDictionary(@Named("dictionaryId") String dictionaryId, User user)
             throws OAuthRequestException {
         String userId = user.getUserId();
-        UserState userState = UserDAO.getUserState(userId);
+        UserState userState = UserStateDAO.getUserState(userId);
         if (userState == null) {
             userState = new UserState(userId);
         }
@@ -66,25 +65,98 @@ public class WordbookAPI {
         UserDictionary userDictionary = getUserDictionary(userId, dictionaryId);
         if (userDictionary == null) {
             userDictionary = new UserDictionary(userId, dictionaryId);
-            List<Word> words = WordDAO.getWords(dictionaryId, 1, 0);
-            userDictionary.setNextWordId(
-                    words.size() == 0 ? null :
-                            words.get(0).getId());
-            UserDAO.putUserDictionary(userDictionary);
+            List<Word> words = WordDAO.getWords(dictionaryId, WITHOUT_LIMIT, WITHOUT_OFFSET);
+            if(words.size() == 0) {
+                throw new RuntimeException("no words in dictionary: " + dictionaryId);
+            }
+            userDictionary.setNextWordId(words.get(0).getId());
+            putUserDictionary(userDictionary);
+            for (Word word : words) {
+                UserWordDAO.put(new UserWord(userId, dictionaryId, word.getId(), null, NEVER));
+            }
         }
-        return new ResponseDTO(0, toDTO(getDictionary(dictionaryId)));
+        return new ResponseDTO(0, toDTO(getDictionary(dictionaryId), userDictionary));
     }
 
     @ApiMethod(
             name = "checkWord",
             path = "check",
             httpMethod = "POST")
-    public ResponseDTO checkWord(WordDTO word, User user) throws OAuthRequestException {
-        return new ResponseDTO(0, new EvaluationResultDTO());//todo: implement
+    public ResponseDTO checkWord(WordDTO word,
+                                 User user) throws OAuthRequestException {
+        // check result
+        String userId = user.getUserId();
+        UserState userState = UserStateDAO.getUserState(userId);
+        if (userState == null) {
+            throw new IllegalArgumentException("wrong user: " + userId + " - not present in database");
+        }
+        String dictionaryId = userState.getCurrentDictionary();
+        Dictionary dictionary = DictionaryDAO.getDictionary(dictionaryId);
+        if(dictionary == null) {
+            throw new RuntimeException("cannot find dictionary for id: " + dictionaryId);
+        }
+        Word savedWord = WordDAO.getWord(dictionaryId, word.getId());
+        if (savedWord == null) {
+            throw new IllegalArgumentException("wrong word: " + word.getId() + " - not present in database");
+        }
+        String validSpelling = savedWord.getSpelling();
+        int result = validSpelling.equals(word.getSpelling()) ? 0 : 1;
+
+        // log
+        long timestamp = System.currentTimeMillis();
+        CheckResultDAO.put(new CheckLog(timestamp, userId, dictionaryId, word.getId(), result));
+
+        // save word level
+        UserWord userWord = UserWordDAO.get(userId, dictionaryId, word.getId());
+        if(userWord == null) {
+            userWord = new UserWord(userId, dictionaryId, word.getId(), 1, timestamp);
+        }
+        int level = 1;
+        if(result == 0) {
+            level = userWord.getLevel() + 1;
+            userWord.setLevel(level);
+        } else {
+            userWord.setLevel(level);
+        }
+        Level levelDetails = LevelDAO.getLevel(dictionaryId, level);
+        Integer delay = levelDetails.getDelay();
+        userWord.setCheckDate(timestamp + fromDaysToMillisecs(delay));
+        UserWordDAO.put(userWord);
+
+        // recalculate next word
+        UserWord nextUserWord = UserWordDAO.pickWordBeforeCheckDate(userId, dictionaryId, timestamp);
+        if(nextUserWord == null) {
+            nextUserWord = UserWordDAO.pickWordWithoutCheckDate(userId, dictionaryId);
+        }
+        if(nextUserWord == null) {
+            throw new RuntimeException("cannot get next word for user: " + userId +
+                    " in dictionary: " + dictionaryId);
+        }
+        String nextWordId = nextUserWord.getWordId();
+        UserDictionary userDictionary = getUserDictionary(userId, dictionaryId);
+        if(userDictionary == null) {
+            throw new RuntimeException(
+                    "user dictionary is not found userId: " + userId +
+                            ", dictionaryId: " + dictionaryId);
+        }
+        userDictionary.setNextWordId(nextWordId);
+        userDictionary.setLearned(UserWordDAO.
+                numWordsWithLevel(userId, dictionaryId, dictionary.getLastLevel()));
+        userDictionary.setActive(UserWordDAO.
+                numWordsWithCheckDate(userId, dictionaryId));
+        putUserDictionary(userDictionary);
+
+        return new ResponseDTO(0, new EvaluationResultDTO(
+                toDTO(dictionary, userDictionary),
+                new EvaluationDTO(result, validSpelling)));
+    }
+
+    private long fromDaysToMillisecs(Integer delay) {
+        return delay * 3600 * 24 * 1000;
     }
 
     private UserStateDTO currentState(User user) {
-        return new UserStateDTO(currentDictionary(user), dictionariesList());
+        return new UserStateDTO(currentDictionary(user), dictionariesList(), user.getEmail());
     }
 
     private List<DictionaryDTO> dictionariesList() {
@@ -93,7 +165,7 @@ public class WordbookAPI {
 
     private CurrentDictionaryDTO currentDictionary(User user) {
         String userId = user.getUserId();
-        UserState userState = UserDAO.getUserState(userId);
+        UserState userState = UserStateDAO.getUserState(userId);
         if (userState == null) {
             return null;
         }

@@ -14,13 +14,13 @@ public class CheckLog {
     private String userId;
     private String dictionaryId;
     private String wordId;
-    private String checkResult;
+    private int checkResult;
 
     public CheckLog(long timestamp,
                     String userId,
                     String dictionaryId,
                     String wordId,
-                    String checkResult) {
+                    int checkResult) {
         this.timestamp = timestamp;
         this.userId = userId;
         this.dictionaryId = dictionaryId;
@@ -63,11 +63,11 @@ public class CheckLog {
         this.wordId = wordId;
     }
 
-    public String getCheckResult() {
+    public int getCheckResult() {
         return checkResult;
     }
 
-    public void setCheckResult(String checkResult) {
+    public void setCheckResult(int checkResult) {
         this.checkResult = checkResult;
     }
 }

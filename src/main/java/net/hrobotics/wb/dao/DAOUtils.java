@@ -7,7 +7,8 @@ import java.util.Iterator;
 
 import static net.hrobotics.wb.dao.DictionaryDAO.DICTIONARY_KIND;
 
-class DAOUtils {
+public class DAOUtils {
+    public static final long NEVER = Long.MAX_VALUE;
     private static DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 
     static void removeChildren(Dictionary dictionary, String wordKind) {
@@ -21,6 +22,10 @@ class DAOUtils {
 
     static Key key(String kind, String id) {
         return new KeyFactory.Builder(kind, id).getKey();
+    }
+
+    static int getIntProperty(Entity entity, String propertyName) {
+        return entity.getProperty(propertyName) != null ? ((Long) entity.getProperty(propertyName)).intValue() : 0;
     }
 
     private static Iterable<Key> toKeys(final Iterable<Entity> entities) {

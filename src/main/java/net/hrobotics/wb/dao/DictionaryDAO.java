@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static net.hrobotics.wb.dao.DAOUtils.getIntProperty;
 import static net.hrobotics.wb.dao.DAOUtils.key;
 
 public class DictionaryDAO {
@@ -47,11 +48,12 @@ public class DictionaryDAO {
         Dictionary dictionary = new Dictionary();
         dictionary.setId((String) entity.getProperty("id"));
         dictionary.setVersion((String) entity.getProperty("version"));
-        dictionary.setNumber((Integer) entity.getProperty("number"));
+        dictionary.setNumber(getIntProperty(entity, "number"));
         dictionary.setTo((String) entity.getProperty("to"));
         dictionary.setFrom((String) entity.getProperty("from"));
         dictionary.setCaption((String) entity.getProperty("caption"));
         dictionary.setName((String) entity.getProperty("name"));
+        dictionary.setLastLevel(getIntProperty(entity, "lastLevel"));
         return dictionary;
     }
 
@@ -63,6 +65,8 @@ public class DictionaryDAO {
         entity.setProperty("from", dictionary.getFrom());
         entity.setProperty("to", dictionary.getTo());
         entity.setProperty("version", dictionary.getVersion());
+        entity.setProperty("number", dictionary.getNumber());
+        entity.setProperty("lastLevel", dictionary.getLastLevel());
         return entity;
     }
 }

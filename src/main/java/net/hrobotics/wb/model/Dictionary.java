@@ -19,6 +19,7 @@ public class Dictionary {
     private String to;
     private String version;
     private Integer number;
+    private Integer lastLevel;
 
     public String getId() {
         return id;
@@ -74,5 +75,13 @@ public class Dictionary {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public Integer getLastLevel() {
+        return lastLevel;
+    }
+
+    public void setLastLevel(Integer lastLevel) {
+        this.lastLevel = lastLevel;
     }
 }
