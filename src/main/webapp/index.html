@@ -14,7 +14,7 @@
       <h1>WB</h1>
     </md-button>
     <span flex></span>
-    <md-select class="w60p" placeholder="{{ml.txtSelectDict}}" ng-model="model.dictionary.id" ng-change="selectDictionary()" ng-show="model.dictionaries">
+    <md-select class="selectDictionary" placeholder="{{ml.txtSelectDictionary}}" ng-model="model.dictionary.id" ng-change="selectDictionary()" ng-show="model.dictionaries">
       <md-option ng-value="dictionary.id" ng-repeat="dictionary in model.dictionaries">{{dictionary.name}}</md-option>
     </md-select>
     <span flex></span>
@@ -24,25 +24,42 @@
     </md-button>
   </md-toolbar>
 
-  <section layout="column" layout-align="center center" ng-show="model.error">
-    <p class="error">{{ml.errResponse}}</p>
+  <div class="loading" ng-class="{hidden:!model.loading}">{{ml.txtLoading}}</div>
+
+  <section layout="column" layout-align="center center" ng-show="model.showError">
+    <div class="error">{{ml.errResponse}}</div>
     <md-button class="md-raised md-warn button" ng-click="repeatRequest()">
       <md-tooltip>{{ml.tipRepeat}}</md-tooltip>
       {{ml.btnRepeat}}
     </md-button>
   </section>
 
-  <div class="loading" ng-show="model.loading">{{ml.txtLoading}}</div>
+  <section layout="column" layout-align="center center" ng-show="model.showDictionary">
+    <form layout="column" layout-align="center center" name="formCheckWrd">
+      <md-input-container class="inputWord">
+        <label>{{model.dictionary.from}}</label>
+        <input ng-model="model.dictionary.word.translation" ng-readonly="true">
+      </md-input-container>
 
-  <section layout="column" layout-align="center center" ng-show="model.dictionary && !model.error">
-    <p>{{ml.txtWordsTotal}} {{model.dictionary.total}}</p>
-    <p>{{ml.txtWordsLearned}} {{model.dictionary.learned}}</p>
-    <p>{{ml.txtWordsWait}} {{model.dictionary.active}}</p>
+      <md-input-container class="inputWord">
+        <label>{{model.dictionary.to}}</label>
+        <input ng-model="model.dictionary.word.spelling" name="spelling" required>
+        <div ng-messages="formCheckWrd.spelling.$error">
+          <div ng-message="required">{{ml.errSpelling}}</div>
+        </div>
+        <div class="tip" ng-class="{hidden:!model.dictionary.word.tip}">{{ml.txtTip}} {{model.dictionary.word.tip}}</div>
+      </md-input-container>
 
-    <md-button class="md-raised md-primary button" ng-click="xxx()">
-      <md-tooltip>{{ml.tipCheckWord}}</md-tooltip>
-     {{ml.btnCkeckWord}}
-    </md-button>
+      <md-button class="md-raised md-primary button" ng-click="checkWord()">
+        {{ml.btnCkeckWord}}
+      </md-button>
+    </form>
+
+    <div class="dictionaryInfo">
+      {{ml.txtWordsTotal}} {{model.dictionary.total}},
+      {{ml.txtWordsLearned}} {{model.dictionary.learned}},
+      {{ml.txtWordsWait}} {{model.dictionary.active}}
+    </div>
   </section>
 
   <script src="bower_components/angular/angular.js"></script>

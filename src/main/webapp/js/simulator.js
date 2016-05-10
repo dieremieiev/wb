@@ -40,7 +40,9 @@ Simulator.prototype.handleCheckWord = function()
       'dictionary': {
         'id': '8a6d2093-57fb-41be-9517-fb4cad8229c2',
         'active': 1,
+        'from': 'ru',
         'learned': 4,
+        'to': 'nl',
         'total': 100,
         'word': {
           'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
@@ -64,7 +66,9 @@ Simulator.prototype.handleGetUserState = function()
       'dictionary': {
         'id': '4a0c7667-d971-45d0-8309-0e475a063164',
         'active': 2,
+        'from': 'ru',
         'learned': 4,
+        'to': 'nl',
         'total': 100,
         'word': {
           'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
@@ -91,7 +95,9 @@ Simulator.prototype.handleSelectDictionary = function()
       'dictionary': {
         'id': '8a6d2093-57fb-41be-9517-fb4cad8229c2',
         'active': 20,
+        'from': 'ru',
         'learned': 40,
+        'to': 'nl',
         'total': 1000,
         'word': {
           'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',

@@ -20,6 +20,7 @@ AppController.prototype.initScope = function(scope)
   var self = this
 
   scope.askLogout        = function() { self.askLogout() }
+  scope.checkWord        = function() { self.checkWord() }
   scope.repeatRequest    = function() { self.repeatRequest() }
   scope.selectDictionary = function() { self.selectDictionary() }
 }
@@ -50,6 +51,25 @@ AppController.prototype.askLogout = function()
   setTimeout(function() { self.setLogoutDialogPosition() }, 0)
 }
 
+AppController.prototype.checkWord = function()
+{
+  var dict = this.scope.model.dictionary
+
+  var data = { 'dictionary': {
+    'id': dict.id,
+    'word': {
+      'id': dict.word.id,
+      'spelling': dict.word.spelling
+    }
+  }}
+
+  var self = this
+
+  this.post('checkWord', null, function(response) {
+    self.handleCheckWord(response)
+  })
+}
+
 AppController.prototype.loadUserState = function()
 {
   var self = this
@@ -71,7 +91,13 @@ AppController.prototype.repeatRequest = function()
 AppController.prototype.selectDictionary = function()
 {
   var data = { 'dictionary': { 'id': this.scope.model.dictionary.id } }
+
   var self = this
+
+  var m = this.scope.model
+
+  m.showDictionary = false
+  m.showError = false
 
   this.post('selectDictionary', data, function(response) {
     self.handleSelectDictionary(response)
@@ -86,20 +112,37 @@ AppController.prototype.selectDictionary = function()
 AppController.prototype.getML = function()
 {
   return {
-    'btnExit'        : 'Выход',
-    'btnRepeat'      : 'Повторить',
-    'btnCkeckWord'   : 'Проверить слово',
-    'errResponse'    : 'Ошибка запроса к серверу. Пожалуйста повторите запрос позже.',
-    'tipCheckWord'   : 'Запрос к серверу на проверку слова',
-    'tipExit'        : 'Выход',
-    'tipRepeat'      : 'Повторить последний запрос к серверу',
-    'txtLoading'     : 'Обработка запроса...',
-    'txtSession'     : 'Текущая сессия:',
-    'txtSelectDict'  : 'Выберите словарь',
-    'txtWordsLearned': 'Выучено слов:',
-    'txtWordsTotal'  : 'Слов в словаре:',
-    'txtWordsWait'   : 'Одижают повторения:'
+    'btnExit'            : 'Выход',
+    'btnRepeat'          : 'Повторить',
+    'btnCkeckWord'       : 'Проверить слово',
+    'errResponse'        : 'Ошибка запроса к серверу. Пожалуйста повторите запрос позже.',
+    'errSpelling'        : 'Пожалуйста введите перевод слова',
+    'tipExit'            : 'Выход',
+    'tipRepeat'          : 'Повторить последний запрос к серверу',
+    'txtLoading'         : 'Обработка запроса...',
+    'txtSession'         : 'Текущая сессия:',
+    'txtSelectDictionary': 'Выберите словарь',
+    'txtTip'             : 'Совет:',
+    'txtWordsLearned'    : 'выучено слов:',
+    'txtWordsTotal'      : 'Слов в словаре:',
+    'txtWordsWait'       : 'ожидают повторения:'
   }
+}
+
+AppController.prototype.handleCheckWord = function(response)
+{
+  var m = this.scope.model
+
+  if (this.isDictionaryValid(response)) {
+    m.dictionary = response.body.dictionary
+    m.showDictionary = true
+    m.showError = false
+  } else {
+    m.showDictionary = false
+    m.showError = true
+  }
+
+  this.updateView()
 }
 
 AppController.prototype.handleGetUserState = function(response)
@@ -111,9 +154,11 @@ AppController.prototype.handleGetUserState = function(response)
     m.dictionary   = this.isDictionaryValid(response)
                    ? response.body.dictionary : null
     m.email = response.body.email
-    m.error = false
+    m.showDictionary = true
+    m.showError = false
   } else {
-    m.error = true
+    m.showDictionary = false
+    m.showError = true
   }
 
   this.updateView()
@@ -130,9 +175,11 @@ AppController.prototype.handleSelectDictionary = function(response)
 
   if (this.isDictionaryValid(response)) {
     m.dictionary = response.body.dictionary
-    m.error = false
+    m.showDictionary = true
+    m.showError = false
   } else {
-    m.error = true
+    m.showDictionary = false
+    m.showError = true
   }
 
   this.updateView()
@@ -142,17 +189,24 @@ AppController.prototype.isDictionaryValid = function(response)
 {
   return response && (response.result == 0) && response.body
                   && response.body.dictionary
+                  && response.body.dictionary.word
 }
 
 AppController.prototype.isUserStateValid = function(response)
 {
   return response && (response.result == 0) && response.body
                   && response.body.dictionaries
+                  && response.body.email
 }
 
 AppController.prototype.logout = function()
 {
   var self = this
+
+  var m = this.scope.model
+
+  m.showDictionary = false
+  m.showError = false
 
   this.post('logout', null, function(response) {
       self.handleLogout(response)
@@ -184,7 +238,7 @@ AppController.prototype.setLogoutDialogPosition = function()
   var w = window.innerWidth - o.offsetWidth - 4
 
   o.style.position = 'fixed'
-  o.style.top = '5em'
+  o.style.top = '2em'
   o.style.left = w + 'px'
 }
 

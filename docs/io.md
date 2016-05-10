@@ -10,7 +10,9 @@
     'dictionary': {
       'id': '4a0c7667-d971-45d0-8309-0e475a063164',
       'active': 2,
+      'from': 'ru',
       'learned': 4,
+      'to': 'nl',
       'total': 100,
       'word': {
         'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
@@ -46,7 +48,9 @@
     'dictionary': {
       'id': '4a0c7667-d971-45d0-8309-0e475a063164',
       'active': 2,
+      'from': 'ru',
       'learned': 4,
+      'to': 'nl',
       'total': 100,
       'word': {
         'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
@@ -79,7 +83,9 @@
     'dictionary': {
       'id': '4a0c7667-d971-45d0-8309-0e475a063164',
       'active': 2,
+      'from': 'ru',
       'learned': 4,
+      'to': 'nl',
       'total': 100,
       'word': {
         'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',

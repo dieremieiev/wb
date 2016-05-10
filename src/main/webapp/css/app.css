@@ -2,15 +2,23 @@
  * CSS
  ****************************************************************************/
 
-.button { padding: 0 1em; }
+.button { margin-top: 2em; padding: 0 1em; }
+
+.dictionaryInfo { font-size: 0.8em; padding-top: 2em; }
 
 .error { padding: 1em 0; text-align: center; }
 
+.inputWord { width: 25em; }
+
 .hauto { height: auto; }
 
-.loading { padding: 1em; }
+.hidden { visibility: hidden; }
 
-.w60p { width: 60%; }
+.loading { color: silver; font-size: 0.8em; padding: 1em 1em 0 1em; text-align: right; }
+
+.selectDictionary { width: 60%; }
+
+.tip { font-size: 0.8em; padding: 1em; }
 
 
 /*****************************************************************************
@@ -28,4 +36,9 @@ md-select:not([disabled]):focus .md-select-value.md-select-placeholder {
   border-bottom-width: 1px;
   color: rgba(255,255,255,0.87);
   padding-bottom: 1px;
+}
+
+md-input-container {
+  margin: 0.5em 0 0 0;
+  padding: 0;
 }
