@@ -1,0 +1,34 @@
+apply plugin: 'java'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+dependencies {
+    compile 'net.hrobotics.wb:admin:v1-1.22.0-SNAPSHOT'
+    compile 'net.hrobotics.wb:wordbook:v1-1.22.0-SNAPSHOT'
+    compile 'org.yaml:snakeyaml:1.17'
+}
+
+//noinspection GroovyUnusedAssignment
+sourceCompatibility = JavaVersion.VERSION_1_7
+//noinspection GroovyUnusedAssignment
+targetCompatibility = JavaVersion.VERSION_1_7
+
+task uploadDictionary(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+
+    main = 'net.hrobotics.wb.api.client.UploadDictionary'
+
+    // arguments to pass to the application
+    args 'http://localhost:8888/_ah/api', '/Users/di/Projects/wb/cli/src/main/resources/top100.yaml', 'wb19032016', '/Users/di/Projects/wb/cli/src/main/resources/top100_saved.yaml'
+}

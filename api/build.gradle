@@ -43,14 +43,16 @@ dependencies {
     compile 'com.google.http-client:google-http-client-jackson2:1.21.0'
     compile 'com.google.oauth-client:google-oauth-client:1.21.0'
     compile 'com.google.guava:guava-jdk5:13.0'
-    compile 'net.hrobotics.wb:admin:v1-1.21.0-SNAPSHOT'
-    compile 'net.hrobotics.wb:wordbook:v1-1.21.0-SNAPSHOT'
 }
 
 //noinspection GroovyUnusedAssignment
 sourceCompatibility = JavaVersion.VERSION_1_7
 //noinspection GroovyUnusedAssignment
 targetCompatibility = JavaVersion.VERSION_1_7
+
+war {
+    from '../ui'
+}
 
 appengine {
     httpPort = 8888
