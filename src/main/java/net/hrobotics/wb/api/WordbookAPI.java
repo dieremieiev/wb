@@ -24,7 +24,8 @@ import static net.hrobotics.wb.dao.WordDAO.getWord;
 @Api(name = "wordbook",
         version = "v1",
         clientIds = {"271144171558-qduruebh6ok3oqtk9irgdkkavt3tsqcu.apps.googleusercontent.com",
-                com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID},
+                com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID,
+                "271144171558-ksb3sgnne6pbsvvi7ajd5j8ito6k44ph.apps.googleusercontent.com"},
         audiences = {"271144171558-qduruebh6ok3oqtk9irgdkkavt3tsqcu.apps.googleusercontent.com"},
         namespace = @ApiNamespace(ownerDomain = "wb.hrobotics.net",
                 ownerName = "wb.hrobotics.net"))
@@ -39,12 +40,11 @@ public class WordbookAPI {
     public ResponseDTO getUserState(User user) {
         try {
             if (user == null) {
-                throw new OAuthRequestException("not authorized");
+                return new ResponseDTO(1, "not authorized");
             }
             return new ResponseDTO(0, currentState(user));
         } catch (Exception e) {
-            e.printStackTrace();
-            LOG.severe(e.getMessage());
+            LOG.throwing(getClass().getName(), "getUserState", e);
             return new ResponseDTO(1, e.getMessage());
         }
     }
@@ -53,29 +53,36 @@ public class WordbookAPI {
             name = "selectDictionary",
             httpMethod = "POST"
     )
-    public ResponseDTO selectDictionary(@Named("dictionaryId") String dictionaryId, User user)
-            throws OAuthRequestException {
-        String userId = user.getUserId();
-        UserState userState = UserStateDAO.getUserState(userId);
-        if (userState == null) {
-            userState = new UserState(userId);
+    public ResponseDTO selectDictionary(@Named("dictionaryId") String dictionaryId, User user) {
+        if (user == null) {
+            return new ResponseDTO(1, "not authorized");
         }
-        userState.setCurrentDictionary(dictionaryId);
-        putUserState(userState);
-        UserDictionary userDictionary = getUserDictionary(userId, dictionaryId);
-        if (userDictionary == null) {
-            userDictionary = new UserDictionary(userId, dictionaryId);
-            List<Word> words = WordDAO.getWords(dictionaryId, WITHOUT_LIMIT, WITHOUT_OFFSET);
-            if(words.size() == 0) {
-                throw new RuntimeException("no words in dictionary: " + dictionaryId);
+        try {
+            String userId = user.getUserId();
+            UserState userState = UserStateDAO.getUserState(userId);
+            if (userState == null) {
+                userState = new UserState(userId);
             }
-            userDictionary.setNextWordId(words.get(0).getId());
-            putUserDictionary(userDictionary);
-            for (Word word : words) {
-                UserWordDAO.put(new UserWord(userId, dictionaryId, word.getId(), null, NEVER));
+            userState.setCurrentDictionary(dictionaryId);
+            putUserState(userState);
+            UserDictionary userDictionary = getUserDictionary(userId, dictionaryId);
+            if (userDictionary == null) {
+                userDictionary = new UserDictionary(userId, dictionaryId);
+                List<Word> words = WordDAO.getWords(dictionaryId, WITHOUT_LIMIT, WITHOUT_OFFSET);
+                if(words.size() == 0) {
+                    throw new RuntimeException("no words in dictionary: " + dictionaryId);
+                }
+                userDictionary.setNextWordId(words.get(0).getId());
+                putUserDictionary(userDictionary);
+                for (Word word : words) {
+                    UserWordDAO.put(new UserWord(userId, dictionaryId, word.getId(), null, NEVER));
+                }
             }
+            return new ResponseDTO(0, toDTO(getDictionary(dictionaryId), userDictionary));
+        } catch (Exception e) {
+            LOG.throwing(getClass().getName(), "selectDictionary", e);
+            return new ResponseDTO(1, e.getMessage());
         }
-        return new ResponseDTO(0, toDTO(getDictionary(dictionaryId), userDictionary));
     }
 
     @ApiMethod(
@@ -85,70 +92,73 @@ public class WordbookAPI {
     public ResponseDTO checkWord(WordDTO word,
                                  User user) throws OAuthRequestException {
         // check result
-        String userId = user.getUserId();
-        UserState userState = UserStateDAO.getUserState(userId);
-        if (userState == null) {
-            throw new IllegalArgumentException("wrong user: " + userId + " - not present in database");
+        if (user == null) {
+            return new ResponseDTO(1, "not authorized");
         }
-        String dictionaryId = userState.getCurrentDictionary();
-        Dictionary dictionary = DictionaryDAO.getDictionary(dictionaryId);
-        if(dictionary == null) {
-            throw new RuntimeException("cannot find dictionary for id: " + dictionaryId);
-        }
-        Word savedWord = WordDAO.getWord(dictionaryId, word.getId());
-        if (savedWord == null) {
-            throw new IllegalArgumentException("wrong word: " + word.getId() + " - not present in database");
-        }
-        String validSpelling = savedWord.getSpelling();
-        int result = validSpelling.equals(word.getSpelling()) ? 0 : 1;
+        try {
+            String userId = user.getUserId();
+            UserState userState = UserStateDAO.getUserState(userId);
+            if (userState == null) {
+                throw new IllegalArgumentException("wrong user: " + userId + " - not present in database");
+            }
+            String dictionaryId = userState.getCurrentDictionary();
+            Dictionary dictionary = DictionaryDAO.getDictionary(dictionaryId);
+            if(dictionary == null) {
+                throw new RuntimeException("cannot find dictionary for id: " + dictionaryId);
+            }
+            Word savedWord = WordDAO.getWord(dictionaryId, word.getId());
+            if (savedWord == null) {
+                throw new IllegalArgumentException("wrong word: " + word.getId() + " - not present in database");
+            }
+            String validSpelling = savedWord.getSpelling();
+            int result = validSpelling.equals(word.getSpelling()) ? 0 : 1;
 
-        // log
-        long timestamp = System.currentTimeMillis();
-        CheckResultDAO.put(new CheckLog(timestamp, userId, dictionaryId, word.getId(), result));
+            // log
+            long timestamp = System.currentTimeMillis();
+            CheckResultDAO.put(new CheckLog(timestamp, userId, dictionaryId, word.getId(), result));
 
-        // save word level
-        UserWord userWord = UserWordDAO.get(userId, dictionaryId, word.getId());
-        if(userWord == null) {
-            userWord = new UserWord(userId, dictionaryId, word.getId(), 1, timestamp);
-        }
-        int level = 1;
-        if(result == 0) {
-            level = userWord.getLevel() + 1;
-            userWord.setLevel(level);
-        } else {
-            userWord.setLevel(level);
-        }
-        Level levelDetails = LevelDAO.getLevel(dictionaryId, level);
-        Integer delay = levelDetails.getDelay();
-        userWord.setCheckDate(timestamp + fromDaysToMillisecs(delay));
-        UserWordDAO.put(userWord);
+            // save word level
+            UserWord userWord = UserWordDAO.get(userId, dictionaryId, word.getId());
+            if(userWord == null) {
+                userWord = new UserWord(userId, dictionaryId, word.getId(), 1, timestamp);
+            }
+            int level = 1;
+            if(result == 0) {
+                level = userWord.getLevel() + 1;
+                userWord.setLevel(level);
+            } else {
+                userWord.setLevel(level);
+            }
+            Level levelDetails = LevelDAO.getLevel(dictionaryId, level);
+            Integer delay = levelDetails.getDelay();
+            userWord.setCheckDate(timestamp + fromDaysToMillisecs(delay));
+            UserWordDAO.put(userWord);
 
-        // recalculate next word
-        UserWord nextUserWord = UserWordDAO.pickWordBeforeCheckDate(userId, dictionaryId, timestamp);
-        if(nextUserWord == null) {
-            nextUserWord = UserWordDAO.pickWordWithoutCheckDate(userId, dictionaryId);
-        }
-        if(nextUserWord == null) {
-            throw new RuntimeException("cannot get next word for user: " + userId +
-                    " in dictionary: " + dictionaryId);
-        }
-        String nextWordId = nextUserWord.getWordId();
-        UserDictionary userDictionary = getUserDictionary(userId, dictionaryId);
-        if(userDictionary == null) {
-            throw new RuntimeException(
-                    "user dictionary is not found userId: " + userId +
-                            ", dictionaryId: " + dictionaryId);
-        }
-        userDictionary.setNextWordId(nextWordId);
-        userDictionary.setLearned(UserWordDAO.
-                numWordsWithLevel(userId, dictionaryId, dictionary.getLastLevel()));
-        userDictionary.setActive(UserWordDAO.
-                numWordsWithCheckDate(userId, dictionaryId));
-        putUserDictionary(userDictionary);
+            // recalculate next word
+            UserWord nextUserWord = UserWordDAO.pickWordBeforeCheckDate(userId, dictionaryId, timestamp);
+            if(nextUserWord == null) {
+                nextUserWord = UserWordDAO.pickWordWithoutCheckDate(userId, dictionaryId);
+            }
+            UserDictionary userDictionary = getUserDictionary(userId, dictionaryId);
+            if(userDictionary == null) {
+                throw new RuntimeException(
+                        "user dictionary is not found userId: " + userId +
+                                ", dictionaryId: " + dictionaryId);
+            }
+            userDictionary.setNextWordId(nextUserWord == null ? null : nextUserWord.getWordId());
+            userDictionary.setLearned(UserWordDAO.
+                    numWordsWithCheckDate(userId, dictionaryId));
+            userDictionary.setActive(UserWordDAO.
+                    numWordsBeforeCheckDate(userId, dictionaryId, timestamp));
+            putUserDictionary(userDictionary);
 
-        return new ResponseDTO(0, new EvaluationResultDTO(
-                toDTO(dictionary, userDictionary),
-                new EvaluationDTO(result, validSpelling)));
+            return new ResponseDTO(0, new EvaluationResultDTO(
+                    toDTO(dictionary, userDictionary),
+                    new EvaluationDTO(result, validSpelling)));
+        } catch (Exception e) {
+            LOG.throwing(getClass().getName(), "checkWord", e);
+            return new ResponseDTO(1, e.getMessage());
+        }
     }
 
     private long fromDaysToMillisecs(Integer delay) {

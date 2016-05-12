@@ -103,4 +103,15 @@ public class UserWordDAO {
                                 "checkDate", EQUAL, NEVER)))
                 .asList(FetchOptions.Builder.withDefaults().limit(1).offset(0));
         return entities.size() == 0 ? null : toUserWord(entities.get(0));    }
+
+    public static Integer numWordsBeforeCheckDate(String userId, String dictionaryId, long timestamp) {
+        return datastoreService.prepare(
+                new Query(USER_WORD_KIND)
+                        .setAncestor(new KeyFactory.Builder(USER_KIND, userId)
+                                .addChild(DICTIONARY_KIND, dictionaryId).getKey())
+                        .setFilter(new FilterPredicate(
+                                "checkDate", LESS_THAN_OR_EQUAL, timestamp))
+                        .addSort("checkDate"))
+                .countEntities(FetchOptions.Builder.withDefaults());
+    }
 }

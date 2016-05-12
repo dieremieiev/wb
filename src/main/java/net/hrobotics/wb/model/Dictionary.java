@@ -21,6 +21,27 @@ public class Dictionary {
     private Integer number;
     private Integer lastLevel;
 
+    public Dictionary(String id,
+                      String name,
+                      String caption,
+                      String from,
+                      String to,
+                      String version,
+                      Integer number,
+                      Integer lastLevel) {
+        this.id = id;
+        this.name = name;
+        this.caption = caption;
+        this.from = from;
+        this.to = to;
+        this.version = version;
+        this.number = number;
+        this.lastLevel = lastLevel;
+    }
+
+    public Dictionary() {
+    }
+
     public String getId() {
         return id;
     }

@@ -16,6 +16,17 @@ public class Word {
     private String translation;
     private String tip;
 
+    public Word(String id, String dictionaryId, String spelling, String translation, String tip) {
+        this.id = id;
+        this.dictionaryId = dictionaryId;
+        this.spelling = spelling;
+        this.translation = translation;
+        this.tip = tip;
+    }
+
+    public Word() {
+    }
+
     public String getId() {
         return id;
     }

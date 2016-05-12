@@ -1,0 +1,35 @@
+<html>
+<body>
+<script>
+  var apiRoot = '//' + window.location.host + '/_ah/api';
+
+  var signIn = function(mode, callback) {
+      gapi.auth.authorize({client_id: "271144171558-ksb3sgnne6pbsvvi7ajd5j8ito6k44ph.apps.googleusercontent.com",
+      scope: "https://www.googleapis.com/auth/userinfo.email", immediate: mode},
+      callback);
+  }
+
+  var auth = function() {
+    signIn(false, function(){alert("auth")});
+  }
+
+  var init = function() {
+      var apisToLoad = 2;
+      var callback = function() {
+        if (--apisToLoad == 0) {
+            signIn(true, function(){
+                gapi.client.wordbook.getUserState().execute(function(resp) {
+                    console.debug(resp);
+                 });
+            })
+         }
+      }
+      gapi.client.load('wordbook', 'v1', callback, apiRoot);
+      gapi.client.load('oauth2', 'v2', callback);
+  }
+</script>
+
+<a href="#" onclick="auth();" id="signinButton">Sign in!</a>
+<script src="https://apis.google.com/js/client.js?onload=init"></script>
+</body>
+</html>
