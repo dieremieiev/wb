@@ -2,27 +2,22 @@
  * Lifecycle
  ****************************************************************************/
 
-function AppController(scope, dialog)
+function AppController()
 {
-  this.scope       = scope
-  this.dialog      = dialog
+  this.scope       = null
+  this.dialog      = null
   this.lastRequest = null
-  this.sim         = new Simulator()
-
-  this.initScope(scope)
+  this.sim         = null
 }
 
-AppController.prototype.initScope = function(scope)
+AppController.prototype.init = function(scope, dialog)
 {
   scope.model = {}
-  scope.ml = this.getML()
+  scope.ml    = this.getML()
 
-  var self = this
-
-  scope.askLogout        = function() { self.askLogout() }
-  scope.checkWord        = function() { self.checkWord() }
-  scope.repeatRequest    = function() { self.repeatRequest() }
-  scope.selectDictionary = function() { self.selectDictionary() }
+  this.scope  = scope
+  this.dialog = dialog
+  this.sim    = new Simulator()
 }
 
 
@@ -70,12 +65,12 @@ AppController.prototype.checkWord = function()
   })
 }
 
-AppController.prototype.loadUserState = function()
+AppController.prototype.login = function()
 {
   var self = this
 
-  this.post('getUserState', null, function(response) {
-      self.handleGetUserState(response)
+  this.post('login', null, function(response) {
+    self.handleLogin(response)
   })
 }
 
@@ -113,12 +108,15 @@ AppController.prototype.getML = function()
 {
   return {
     'btnExit'            : 'Выход',
+    'btnLogin'           : 'Войти',
     'btnRepeat'          : 'Повторить',
     'btnCkeckWord'       : 'Проверить слово',
     'errResponse'        : 'Ошибка запроса к серверу. Пожалуйста повторите запрос позже.',
     'errSpelling'        : 'Пожалуйста введите перевод слова',
     'tipExit'            : 'Выход',
+    'tipLogin'           : 'Авторизация через Google аккаунт',
     'tipRepeat'          : 'Повторить последний запрос к серверу',
+    'txtAppInfo'         : 'Проект WB: учим слова нидерландского языка',
     'txtLoading'         : 'Обработка запроса...',
     'txtSession'         : 'Текущая сессия:',
     'txtSelectDictionary': 'Выберите словарь',
@@ -164,9 +162,16 @@ AppController.prototype.handleGetUserState = function(response)
   this.updateView()
 }
 
+AppController.prototype.handleLogin = function(response)
+{
+  this.loadUserState() // TODO
+}
+
 AppController.prototype.handleLogout = function(response)
 {
-  location.reload()
+  this.scope.model = {}
+
+  this.updateView()
 }
 
 AppController.prototype.handleSelectDictionary = function(response)
@@ -197,6 +202,15 @@ AppController.prototype.isUserStateValid = function(response)
   return response && (response.result == 0) && response.body
                   && response.body.dictionaries
                   && response.body.email
+}
+
+AppController.prototype.loadUserState = function()
+{
+  var self = this
+
+  this.post('getUserState', null, function(response) {
+      self.handleGetUserState(response)
+  })
 }
 
 AppController.prototype.logout = function()

@@ -5,8 +5,14 @@
 
   app.controller('AppController', function($scope, $mdDialog)
   {
-    var ac = new AppController($scope, $mdDialog)
+    var ac = new AppController()
 
-    ac.loadUserState()
+    ac.init($scope, $mdDialog)
+
+    $scope.askLogout        = function() { ac.askLogout() }
+    $scope.checkWord        = function() { ac.checkWord() }
+    $scope.login            = function() { ac.login() }
+    $scope.repeatRequest    = function() { ac.repeatRequest() }
+    $scope.selectDictionary = function() { ac.selectDictionary() }
   })
 })()

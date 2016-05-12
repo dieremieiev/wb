@@ -13,7 +13,7 @@ Simulator.prototype.post = function(action, data, callback)
 {
   var self = this
 
-  setTimeout(function() { callback(self.handle(action, data)) }, 1000)
+  setTimeout(function() { callback(self.handle(action, data)) }, 100)
 }
 
 

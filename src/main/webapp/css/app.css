@@ -6,8 +6,6 @@
 
 .dictionaryInfo { font-size: 0.8em; padding-top: 2em; }
 
-.error { padding: 1em 0; text-align: center; }
-
 .inputWord { width: 25em; }
 
 .hauto { height: auto; }
@@ -15,6 +13,8 @@
 .hidden { visibility: hidden; }
 
 .loading { color: silver; font-size: 0.8em; padding: 1em 1em 0 1em; text-align: right; }
+
+.message { padding: 1em 0; text-align: center; }
 
 .selectDictionary { width: 60%; }
 

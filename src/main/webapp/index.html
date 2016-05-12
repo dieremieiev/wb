@@ -18,7 +18,7 @@
       <md-option ng-value="dictionary.id" ng-repeat="dictionary in model.dictionaries">{{dictionary.name}}</md-option>
     </md-select>
     <span flex></span>
-    <md-button aria-label="logout" ng-click="askLogout()">
+    <md-button aria-label="logout" ng-click="askLogout()" ng-show="model.email">
       <md-tooltip>{{ml.tipExit}}</md-tooltip>
       <ng-md-icon class="hauto" icon="logout" size="48"></ng-md-icon>
     </md-button>
@@ -26,8 +26,16 @@
 
   <div class="loading" ng-class="{hidden:!model.loading}">{{ml.txtLoading}}</div>
 
+  <section layout="column" layout-align="center center" ng-show="!model.email">
+    <div class="message">{{ml.txtAppInfo}}</div>
+    <md-button class="md-raised md-primary button" ng-click="login()">
+      <md-tooltip>{{ml.tipLogin}}</md-tooltip>
+      {{ml.btnLogin}}
+    </md-button>
+  </section>
+
   <section layout="column" layout-align="center center" ng-show="model.showError">
-    <div class="error">{{ml.errResponse}}</div>
+    <div class="message">{{ml.errResponse}}</div>
     <md-button class="md-raised md-warn button" ng-click="repeatRequest()">
       <md-tooltip>{{ml.tipRepeat}}</md-tooltip>
       {{ml.btnRepeat}}
