@@ -18,7 +18,11 @@
 
 .selectDictionary { width: 60%; }
 
-.tip { font-size: 0.8em; padding: 1em; }
+.resultNOK { color: red; padding-top: 1em; }
+
+.resultOK { color: green; padding-top: 1em; }
+
+.tip { font-size: 0.8em; padding: 3em 0 1em 0; }
 
 
 /*****************************************************************************
@@ -42,3 +46,7 @@ md-input-container {
   margin: 0.5em 0 0 0;
   padding: 0;
 }
+
+md-input-container .md-input[disabled] { color: black; }
+
+md-input-container label { color: gray; }

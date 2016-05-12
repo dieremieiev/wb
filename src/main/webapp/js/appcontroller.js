@@ -18,6 +18,13 @@ AppController.prototype.init = function(scope, dialog)
   this.scope  = scope
   this.dialog = dialog
   this.sim    = new Simulator()
+
+  // TODO - implement ENTER
+
+  // var self = this
+  // scope.onKeyDown = function(event) {
+  //   if (event.keyCode == 13) { self.onEnter() }
+  // }
 }
 
 
@@ -48,21 +55,7 @@ AppController.prototype.askLogout = function()
 
 AppController.prototype.checkWord = function()
 {
-  var dict = this.scope.model.dictionary
-
-  var data = { 'dictionary': {
-    'id': dict.id,
-    'word': {
-      'id': dict.word.id,
-      'spelling': dict.word.spelling
-    }
-  }}
-
-  var self = this
-
-  this.post('checkWord', null, function(response) {
-    self.handleCheckWord(response)
-  })
+  this.checkWordImpl(this.scope.model.dictionary.word.spelling)
 }
 
 AppController.prototype.login = function()
@@ -74,13 +67,23 @@ AppController.prototype.login = function()
   })
 }
 
+AppController.prototype.nextWord = function()
+{
+  var m = this.scope.model
+
+  m.evaluation = null
+
+  m.dictionary.word = m.nextWord
+
+  var self = this
+  setTimeout(function() { self.updateView() }, 0)
+}
+
 AppController.prototype.repeatRequest = function()
 {
   var oa = this.lastRequest
 
-  if ( oa != null ) {
-    this.post(oa[0], oa[1], oa[2])
-  }
+  if ( oa != null ) { this.post(oa[0], oa[1], oa[2]) }
 }
 
 AppController.prototype.selectDictionary = function()
@@ -91,6 +94,7 @@ AppController.prototype.selectDictionary = function()
 
   var m = this.scope.model
 
+  m.evaluation = null
   m.showDictionary = false
   m.showError = false
 
@@ -99,24 +103,51 @@ AppController.prototype.selectDictionary = function()
   })
 }
 
+AppController.prototype.suggestWord = function()
+{
+  this.checkWordImpl(null)
+}
+
 
 /*****************************************************************************
  * Private
  ****************************************************************************/
 
+AppController.prototype.checkWordImpl = function(spelling)
+{
+  var dict = this.scope.model.dictionary
+
+  var data = { 'dictionary': {
+    'id': dict.id,
+    'word': {
+      'id': dict.word.id,
+      'spelling': spelling
+    }
+  }}
+
+  var self = this
+
+  this.post('checkWord', null, function(response) {
+    self.handleCheckWord(response)
+  })
+}
+
 AppController.prototype.getML = function()
 {
   return {
+    'btnContinue'        : 'Продолжить',
     'btnExit'            : 'Выход',
     'btnLogin'           : 'Войти',
     'btnRepeat'          : 'Повторить',
-    'btnCkeckWord'       : 'Проверить слово',
+    'btnSuggestWord'     : 'Подсказка',
+    'btnCkeckWord'       : 'Проверить',
     'errResponse'        : 'Ошибка запроса к серверу. Пожалуйста повторите запрос позже.',
-    'errSpelling'        : 'Пожалуйста введите перевод слова',
     'tipExit'            : 'Выход',
     'tipLogin'           : 'Авторизация через Google аккаунт',
     'tipRepeat'          : 'Повторить последний запрос к серверу',
     'txtAppInfo'         : 'Проект WB: учим слова нидерландского языка',
+    'txtCorrect'         : 'Правильно!',
+    'txtCorrectVariant'  : 'Правильный вариант:',
     'txtLoading'         : 'Обработка запроса...',
     'txtSession'         : 'Текущая сессия:',
     'txtSelectDictionary': 'Выберите словарь',
@@ -132,7 +163,17 @@ AppController.prototype.handleCheckWord = function(response)
   var m = this.scope.model
 
   if (this.isDictionaryValid(response)) {
+    var w = m.dictionary.word
+
+    if (this.isEvaluationValid(response)) {
+      m.evaluation = response.body.evaluation
+      m.nextWord = response.body.dictionary.word
+    }
+
     m.dictionary = response.body.dictionary
+
+    if (w) { m.dictionary.word = w }
+
     m.showDictionary = true
     m.showError = false
   } else {
@@ -197,6 +238,12 @@ AppController.prototype.isDictionaryValid = function(response)
                   && response.body.dictionary.word
 }
 
+AppController.prototype.isEvaluationValid = function(response)
+{
+  return response && response.body && response.body.evaluation
+                  && response.body.evaluation.spelling
+}
+
 AppController.prototype.isUserStateValid = function(response)
 {
   return response && (response.result == 0) && response.body
@@ -258,5 +305,9 @@ AppController.prototype.setLogoutDialogPosition = function()
 
 AppController.prototype.updateView = function()
 {
-    this.scope.$apply()
+  this.scope.$apply()
+
+  if (this.scope.model.showDictionary) {
+    document.getElementById('spelling').focus()
+  }
 }

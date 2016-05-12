@@ -13,7 +13,7 @@ Simulator.prototype.post = function(action, data, callback)
 {
   var self = this
 
-  setTimeout(function() { callback(self.handle(action, data)) }, 100)
+  setTimeout(function() { callback(self.handle(action, data)) }, 200)
 }
 
 
@@ -45,14 +45,14 @@ Simulator.prototype.handleCheckWord = function()
         'to': 'nl',
         'total': 100,
         'word': {
-          'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
-          'tip': 'такое же написание используется еще в значении "один"',
-          'translation': 'неопределенный артикль;один'
+          'id': '950d1160-6023-42c3-9fca-976fa238cec0',
+          'tip': 'в русском языке пропускается: вместо: Я есть человек - просто: Я человек',
+          'translation': 'есть'
         }
       },
       'evaluation': {
         'result': 0,
-        'spelling': 'xxx'
+        'spelling': 'een'
       }
     }
   }

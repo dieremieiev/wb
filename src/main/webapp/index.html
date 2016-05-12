@@ -46,21 +46,38 @@
     <form layout="column" layout-align="center center" name="formCheckWrd">
       <md-input-container class="inputWord">
         <label>{{model.dictionary.from}}</label>
-        <input ng-model="model.dictionary.word.translation" ng-readonly="true">
+        <input ng-model="model.dictionary.word.translation" disabled>
       </md-input-container>
 
       <md-input-container class="inputWord">
         <label>{{model.dictionary.to}}</label>
-        <input ng-model="model.dictionary.word.spelling" name="spelling" required>
-        <div ng-messages="formCheckWrd.spelling.$error">
-          <div ng-message="required">{{ml.errSpelling}}</div>
-        </div>
+        <input id="spelling" ng-model="model.dictionary.word.spelling" placeholder="" data-ng-disabled="model.evaluation">
         <div class="tip" ng-class="{hidden:!model.dictionary.word.tip}">{{ml.txtTip}} {{model.dictionary.word.tip}}</div>
       </md-input-container>
 
-      <md-button class="md-raised md-primary button" ng-click="checkWord()">
-        {{ml.btnCkeckWord}}
-      </md-button>
+      <section layout="row" ng-show="!model.evaluation">
+        <md-button class="md-raised md-primary button" ng-click="checkWord()" data-ng-disabled="!model.dictionary.word.spelling">
+          {{ml.btnCkeckWord}}
+        </md-button>
+
+        <md-button class="md-raised button" ng-click="suggestWord()">
+          {{ml.btnSuggestWord}}
+        </md-button>
+      </section>
+
+      <section layout="column" layout-align="center center" ng-show="model.evaluation">
+        <div class="resultOK" ng-show="!model.evaluation.result">
+          <div>{{ml.txtCorrect}}</div>
+        </div>
+
+        <div class="resultNOK" ng-show="model.evaluation.result">
+          <div>{{ml.txtCorrectVariant}} {{model.evaluation.spelling}}</div>
+        </div>
+
+        <md-button class="md-raised md-primary button" ng-click="nextWord()">
+          {{ml.btnContinue}}
+        </md-button>
+      </section>
     </form>
 
     <div class="dictionaryInfo">
