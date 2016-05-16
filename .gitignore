@@ -1,4 +1,7 @@
 .gradle
 .idea
-src/main/webapp/bower_components
-src/main/webapp/node_modules
+api/build
+cli/build
+cli/src/main/resources/top100_saved.yaml
+ui/bower_components
+ui/node_modules

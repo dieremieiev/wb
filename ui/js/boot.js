@@ -16,8 +16,5 @@
     $scope.repeatRequest    = function() { ac.repeatRequest() }
     $scope.selectDictionary = function() { ac.selectDictionary() }
     $scope.suggestWord      = function() { ac.suggestWord() }
-
-    //TODO - remove following
-    ac.loadUserState()
   })
 })()

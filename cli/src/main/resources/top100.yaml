@@ -1,8 +1,8 @@
 dictionary:
   name: "top100"
   caption: "100 наиболее распостранных слов голландского языка"
-  from: "russian"
-  to: "netherlands"
+  from: "ru"
+  to: "nl"
   version: "0.1"
   lastLevel: 3
 levels:

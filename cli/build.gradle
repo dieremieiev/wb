@@ -30,5 +30,5 @@ task uploadDictionary(type: JavaExec) {
     main = 'net.hrobotics.wb.api.client.UploadDictionary'
 
     // arguments to pass to the application
-    args 'http://localhost:8888/_ah/api', '/Users/di/Projects/wb/cli/src/main/resources/top100.yaml', 'wb19032016', '/Users/di/Projects/wb/cli/src/main/resources/top100_saved.yaml'
+    args 'http://localhost:8888/_ah/api', "$projectDir/src/main/resources/top100.yaml", 'wb19032016', "$projectDir/src/main/resources/top100_saved.yaml"
 }
