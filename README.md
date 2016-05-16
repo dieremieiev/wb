@@ -1,1 +1,3 @@
 # wb
+
+gradle appengineEndpointsInstallClientLibs
