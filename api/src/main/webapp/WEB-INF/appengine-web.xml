@@ -8,7 +8,7 @@
         <include path="/robots.txt"/>
         <include path="/favicon.ico"/>
         <include path="/bower_components/**"/>
-        <include path="/js/**"/>
+        <include path="/app/**"/>
         <include path="/css/**"/>
     </static-files>
     <system-properties>

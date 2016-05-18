@@ -5,9 +5,9 @@ function init() { window.init() }
 
   var app = angular.module('app', ['ngMaterial', 'ngSanitize', 'ngMdIcons'])
 
-  app.controller('AppController', function($scope, $mdDialog, $window)
+  app.controller('AppController', function($scope, $mdDialog, $timeout, $window)
   {
-    var ac = new AppController($scope, $mdDialog)
+    var ac = new AppController($scope, $mdDialog, $timeout)
 
     $scope.askLogout        = function() { ac.askLogout() }
     $scope.checkWord        = function() { ac.checkWord() }

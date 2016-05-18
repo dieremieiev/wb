@@ -32,33 +32,24 @@ WBService.prototype.init = function(callback)
 
 WBService.prototype.login = function(mode, callback)
 {
-  var self = this
-
-  setTimeout(function() {
-    gapi.auth.authorize({
-      client_id: self.m_clientID,
-      scope    : self.m_scope,
-      immediate: mode
-    }, function(response) {
-      if (response && !response.error && response.access_token) { callback() }
-    });
-  }, 0)
+  gapi.auth.authorize({
+    client_id: this.m_clientID,
+    scope    : this.m_scope,
+    immediate: mode
+  }, function(response) {
+    callback(response && !response.error && response.access_token)
+  });
 }
 
-WBService.prototype.logout = function(callback)
+WBService.prototype.logout = function()
 {
   // TODO: do NOT work with localhost => check on real domain
 
-  setTimeout(function() {
-    gapi.auth.setToken(null)
-    gapi.auth.signOut()
-    callback()
-  }, 0)
+  gapi.auth.setToken(null)
+  gapi.auth.signOut()
 }
 
 WBService.prototype.post = function(action, data, callback)
 {
-  setTimeout(function() {
-    gapi.client.wordbook[action](data).execute(callback)
-  }, 0)
+  gapi.client.wordbook[action](data).execute(callback)
 }

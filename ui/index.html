@@ -26,7 +26,7 @@
 
   <div class="loading" ng-class="{hidden:!model.loading}">{{ml.txtLoading}}</div>
 
-  <section layout="column" layout-align="center center" ng-show="!model.email">
+  <section layout="column" layout-align="center center" ng-show="!model.loading && !model.email">
     <div class="message">{{ml.txtAppInfo}}</div>
     <md-button class="md-raised md-primary button" ng-click="login()">
       <md-tooltip>{{ml.tipLogin}}</md-tooltip>
@@ -87,7 +87,7 @@
     </div>
   </section>
 
-  <section layout="column" layout-align="center center" ng-show="model.emai && !model.dictionary">
+  <section layout="column" layout-align="center center" ng-show="model.email && !model.dictionary">
     <div class="message">{{ml.txtNoDictionary}}</div>
   </section>
 

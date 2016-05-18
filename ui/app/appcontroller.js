@@ -4,15 +4,18 @@
 
 "use strict";
 
-function AppController(scope, dialog)
+function AppController(scope, dialog, tm)
 {
   this.scope       = scope
   this.dialog      = dialog
+  this.tm          = tm
   this.lastRequest = null
   this.api         = null
 
-  scope.model = {}
-  scope.ml    = this.getML()
+  scope.model      = {}
+  scope.ml         = this.getML()
+
+  this.showLoading(true)
 
   // TODO - implement ENTER
 
@@ -28,7 +31,10 @@ AppController.prototype.init = function()
 
   var self = this
 
-  this.api.init(function() { self.loadUserState() })
+  this.api.init(function(b) {
+    self.showLoading(false)
+    if (b) { self.loadUserState() }
+  })
 }
 
 
@@ -40,7 +46,7 @@ AppController.prototype.askLogout = function()
 {
   var ml = this.scope.ml
 
-  var dialog = this.dialog.alert()
+  var panel = this.dialog.alert()
     .clickOutsideToClose(true)
     .htmlContent('<p>' + ml.txtSession + '</p>' + this.scope.model.email)
     .ok(ml.btnExit)
@@ -48,13 +54,16 @@ AppController.prototype.askLogout = function()
   var self = this
 
   this.dialog
-    .show(dialog)
-    .finally(function() { dialog = undefined })
+    .show(panel)
+    .finally(function() {
+      panel = undefined
+      self.updateView()
+    })
     .then(function(b) {
       if (b) { self.logout() }
     })
 
-  setTimeout(function() { self.setLogoutDialogPosition() }, 0)
+  this.tm(function() { AppController.prototype.setLogoutDialogPosition() })
 }
 
 AppController.prototype.checkWord = function()
@@ -64,15 +73,12 @@ AppController.prototype.checkWord = function()
 
 AppController.prototype.login = function()
 {
-  // TODO: if this.api is NULL => show message
+  if (this.api == null) { return }
 
   var self = this
 
-  this.scope.model.loading = true
-
-  this.api.login(false, function() {
-    self.scope.model.loading = false
-    self.loadUserState()
+  this.api.login(false, function(b) {
+    if (b) { self.loadUserState() }
   })
 }
 
@@ -84,8 +90,7 @@ AppController.prototype.nextWord = function()
 
   m.word = m.nextWord
 
-  var self = this
-  setTimeout(function() { self.updateView() }, 0) // TODO: do we need setTimeout here?
+  this.updateView()
 }
 
 AppController.prototype.repeatRequest = function()
@@ -124,12 +129,12 @@ AppController.prototype.suggestWord = function()
 
 AppController.prototype.checkWordImpl = function(spelling)
 {
-  var dict = this.scope.model.dictionary
+  var m = this.scope.model
 
   var data = {
-    'dictionaryId': dict.id,
+    'dictionaryId': m.dictionary.id,
     'word': {
-      'id'      : dict.word.id,
+      'id'      : m.word.id,
       'spelling': spelling
     }
   }
@@ -158,7 +163,7 @@ AppController.prototype.getML = function()
     'txtCorrect'         : 'Правильно!',
     'txtCorrectVariant'  : 'Правильный вариант:',
     'txtLoading'         : 'Обработка запроса...',
-    'txtNoDictionary'    : 'На данный момент текущий словарь не выбран.',
+    'txtNoDictionary'    : 'На данный момент словарь не выбран.',
     'txtSession'         : 'Текущая сессия:',
     'txtSelectDictionary': 'Выберите словарь',
     'txtTip'             : 'Совет:',
@@ -186,8 +191,6 @@ AppController.prototype.handleCheckWord = function(response)
     m.showDictionary = false
     m.showError      = true
   }
-
-  this.updateView()
 }
 
 AppController.prototype.handleGetUserState = function(response)
@@ -209,18 +212,6 @@ AppController.prototype.handleGetUserState = function(response)
     m.showDictionary = false
     m.showError      = true
   }
-
-  this.updateView()
-}
-
-AppController.prototype.handleLogout = function(response)
-{
-  var self = this
-
-  setTimeout(function() {
-    self.scope.model = {}
-    self.updateView()
-  }, 0)
 }
 
 AppController.prototype.handleSelectDictionary = function(response)
@@ -229,14 +220,14 @@ AppController.prototype.handleSelectDictionary = function(response)
 
   if (this.isDictionaryValid(response)) {
     m.dictionary     = response.body.dictionary
+    m.word           = this.isWordValid(response) ? response.body.word : null
+
     m.showDictionary = true
     m.showError      = false
   } else {
     m.showDictionary = false
     m.showError      = true
   }
-
-  this.updateView()
 }
 
 AppController.prototype.isDictionaryValid = function(response)
@@ -275,7 +266,7 @@ AppController.prototype.loadUserState = function()
 
 AppController.prototype.logout = function()
 {
-  // TODO: if this.api is NULL => show message
+  if (this.api == null) { return }
 
   var m = this.scope.model
 
@@ -284,32 +275,31 @@ AppController.prototype.logout = function()
 
   var self = this
 
-  this.scope.model.loading = true
+  this.showLoading(true)
 
-  this.api.logout(function() {
-    self.scope.model.loading = false
-    self.handleLogout()
+  this.tm(function() {
+    self.scope.model = {}
+    self.api.logout()
   })
 }
 
 AppController.prototype.post = function(action, data, callback)
 {
-  // TODO: if this.api is NULL => show message
+  if (this.api == null) {
+    collback(null)
+    return
+  }
 
   this.lastRequest = [ action, data, callback ]
 
   var self = this
 
-  this.scope.model.loading = true
+  this.showLoading(true)
 
-  this.updateView() // TODO
-
-  var f = function(response) {
-    self.scope.model.loading = false
+  this.api.post(action, data, function(response) {
     callback(response ? response.result : null)
-  }
-
-  this.api.post(action, data, f);
+    self.showLoading(false)
+  });
 }
 
 AppController.prototype.setLogoutDialogPosition = function()
@@ -325,11 +315,22 @@ AppController.prototype.setLogoutDialogPosition = function()
   o.style.left     = w + 'px'
 }
 
+AppController.prototype.showLoading = function(b)
+{
+  this.scope.model.loading = b
+
+  this.updateView()
+}
+
 AppController.prototype.updateView = function()
 {
-  this.scope.$apply()
+  var self = this
 
-  if (this.scope.model.showDictionary) {
-    document.getElementById('spelling').focus()
-  }
+  this.tm(function() {
+    if (self.scope.model.showDictionary) {
+      self.tm(function() {
+        document.getElementById('spelling').focus()
+      }, 0, false)
+    }
+  })
 }
