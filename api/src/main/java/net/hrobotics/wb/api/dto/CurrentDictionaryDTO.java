@@ -5,18 +5,21 @@ public class CurrentDictionaryDTO {
     private int active;
     private int learned;
     private int total;
-    private WordDTO word;
+    private String from;
+    private String to;
 
     public CurrentDictionaryDTO(String id,
                                 int active,
                                 int learned,
                                 int total,
-                                WordDTO word) {
+                                String from,
+                                String to) {
         this.id = id;
         this.active = active;
         this.learned = learned;
         this.total = total;
-        this.word = word;
+        this.from = from;
+        this.to = to;
     }
 
     public CurrentDictionaryDTO() {
@@ -54,11 +57,19 @@ public class CurrentDictionaryDTO {
         this.total = total;
     }
 
-    public WordDTO getWord() {
-        return word;
+    public String getFrom() {
+        return from;
     }
 
-    public void setWord(WordDTO word) {
-        this.word = word;
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 }

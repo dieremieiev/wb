@@ -14,12 +14,13 @@
       'learned': 4,
       'to': 'nl',
       'total': 100,
+    },
       'word': {
         'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
         'tip': 'такое же написание используется еще в значении "один"',
         'translation': 'неопределенный артикль;один'
-      }
-    },
+      },
+
     'dictionaries': [
       { 'id': '5f6b2f41-d144-42aa-8a18-5a9e5e344f04', 'name': 'Словарь: 100 основных слов' },
       { 'id': '8a6d2093-57fb-41be-9517-fb4cad8229c2', 'name': 'Словарь: Числа' },
@@ -36,9 +37,7 @@
 {
   'action': 'selectDictionary',
   'body': {
-    'dictionary': {
-      'id': '4a0c7667-d971-45d0-8309-0e475a063164'
-    }
+    'dictionaryId': '4a0c7667-d971-45d0-8309-0e475a063164'
   }
 }
 
@@ -67,13 +66,11 @@
 {
   'action': 'checkWord',
   'body': {
-    'dictionary': {
-      'id': '4a0c7667-d971-45d0-8309-0e475a063164'
-      'word': {
-        'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
-        'spelling': 'xxx'
+     'dictionaryId': '4a0c7667-d971-45d0-8309-0e475a063164',
+     'word': {
+       'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
+       'spelling': 'xxx'
       }
-    } 
   }
 }
 

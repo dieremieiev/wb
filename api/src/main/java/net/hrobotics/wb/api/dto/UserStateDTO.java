@@ -28,15 +28,18 @@ import java.util.List;
  */
 public class UserStateDTO {
     private CurrentDictionaryDTO dictionary;
+    private WordDTO word;
     private List<DictionaryDTO> dictionaries;
     private String email;
 
     public UserStateDTO(CurrentDictionaryDTO dictionary,
                         List<DictionaryDTO> dictionaries,
-                        String email) {
+                        String email,
+                        WordDTO word) {
         this.dictionary = dictionary;
         this.dictionaries = dictionaries;
         this.email = email;
+        this.word = word;
     }
 
     public UserStateDTO() {
@@ -64,5 +67,13 @@ public class UserStateDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public WordDTO getWord() {
+        return word;
+    }
+
+    public void setWord(WordDTO word) {
+        this.word = word;
     }
 }

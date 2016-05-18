@@ -79,7 +79,11 @@ public class WordbookAPI {
                     UserWordDAO.put(new UserWord(userId, dictionaryId, word.getId(), null, NEVER));
                 }
             }
-            return new ResponseDTO(0, toDTO(getDictionary(dictionaryId), userDictionary));
+            String nextWordId = userDictionary.getNextWordId();
+            WordDTO word = nextWordId == null ? null : toDTO(getWord(userDictionary.getDictionaryId(), nextWordId));
+            return new ResponseDTO(0, new SelectDictionaryResultDTO(
+                    toDTO(getDictionary(dictionaryId), userDictionary),
+                    word));
         } catch (Exception e) {
             LOG.throwing(getClass().getName(), "selectDictionary", e);
             return new ResponseDTO(1, e.getMessage());
@@ -90,7 +94,7 @@ public class WordbookAPI {
             name = "checkWord",
             path = "check",
             httpMethod = "POST")
-    public ResponseDTO checkWord(WordDTO word,
+    public ResponseDTO checkWord(@Named("dictionaryId") String dictionaryId, WordDTO word,
                                  User user) throws OAuthRequestException {
         // check result
         if (user == null) {
@@ -102,7 +106,6 @@ public class WordbookAPI {
             if (userState == null) {
                 throw new IllegalArgumentException("wrong user: " + userId + " - not present in database");
             }
-            String dictionaryId = userState.getCurrentDictionary();
             Dictionary dictionary = DictionaryDAO.getDictionary(dictionaryId);
             if(dictionary == null) {
                 throw new RuntimeException("cannot find dictionary for id: " + dictionaryId);
@@ -153,9 +156,12 @@ public class WordbookAPI {
                     numWordsBeforeCheckDate(userId, dictionaryId, timestamp));
             putUserDictionary(userDictionary);
 
+            String nextWordId = userDictionary.getNextWordId();
+            WordDTO wordDTO = nextWordId == null ? null :
+                    toDTO(getWord(userDictionary.getDictionaryId(), nextWordId));
             return new ResponseDTO(0, new EvaluationResultDTO(
                     toDTO(dictionary, userDictionary),
-                    new EvaluationDTO(result, validSpelling)));
+                    wordDTO, new EvaluationDTO(result, validSpelling)));
         } catch (Exception e) {
             LOG.throwing(getClass().getName(), "checkWord", e);
             return new ResponseDTO(1, e.getMessage());
@@ -167,26 +173,30 @@ public class WordbookAPI {
     }
 
     private UserStateDTO currentState(User user) {
-        return new UserStateDTO(currentDictionary(user), dictionariesList(), user.getEmail());
+        CurrentDictionaryDTO currentDictionaryDTO = null;
+        WordDTO word = null;
+        String userId = user.getUserId();
+        UserState userState = UserStateDAO.getUserState(userId);
+        if (userState != null) {
+            UserDictionary currentDictionary = getUserDictionary(userId,
+                    userState.getCurrentDictionary());
+            if (currentDictionary != null) {
+                String nextWordId = currentDictionary.getNextWordId();
+                currentDictionaryDTO =
+                        toDTO(getDictionary(currentDictionary.getDictionaryId()), currentDictionary);
+                word = nextWordId == null ? null :
+                        toDTO(getWord(currentDictionary.getDictionaryId(), nextWordId));
+            }
+        }
+        return new UserStateDTO(
+                currentDictionaryDTO,
+                dictionariesList(),
+                user.getEmail(),
+                word);
     }
 
     private List<DictionaryDTO> dictionariesList() {
         return toDTO(DictionaryDAO.list());
-    }
-
-    private CurrentDictionaryDTO currentDictionary(User user) {
-        String userId = user.getUserId();
-        UserState userState = UserStateDAO.getUserState(userId);
-        if (userState == null) {
-            return null;
-        }
-        UserDictionary currentDictionary = getUserDictionary(userId,
-                userState.getCurrentDictionary());
-        if (currentDictionary == null) {
-            return null;
-        }
-        return toDTO(getDictionary(currentDictionary.getDictionaryId()),
-                currentDictionary);
     }
 
     private CurrentDictionaryDTO toDTO(Dictionary dictionary, UserDictionary userDictionary) {
@@ -195,9 +205,8 @@ public class WordbookAPI {
         result.setActive(userDictionary.getActive() == null ? 0 : userDictionary.getActive());
         result.setLearned(userDictionary.getLearned() == null ? 0 : userDictionary.getLearned());
         result.setTotal(dictionary.getNumber() == null ? 0 : dictionary.getNumber());
-        String nextWordId = userDictionary.getNextWordId();
-        result.setWord(nextWordId == null ? null :
-                toDTO(getWord(userDictionary.getDictionaryId(), nextWordId)));
+        result.setFrom(dictionary.getFrom());
+        result.setTo(dictionary.getTo());
         return result;
     }
 

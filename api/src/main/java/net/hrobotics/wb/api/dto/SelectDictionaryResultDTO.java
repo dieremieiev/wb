@@ -1,17 +1,15 @@
 package net.hrobotics.wb.api.dto;
 
-public class EvaluationResultDTO {
+public class SelectDictionaryResultDTO {
     private CurrentDictionaryDTO dictionary;
     private WordDTO word;
-    private EvaluationDTO evaluation;
 
-    public EvaluationResultDTO(CurrentDictionaryDTO dictionary, WordDTO word, EvaluationDTO evaluation) {
+    public SelectDictionaryResultDTO(CurrentDictionaryDTO dictionary, WordDTO word) {
         this.dictionary = dictionary;
         this.word = word;
-        this.evaluation = evaluation;
     }
 
-    public EvaluationResultDTO() {
+    public SelectDictionaryResultDTO() {
     }
 
     public CurrentDictionaryDTO getDictionary() {
@@ -20,14 +18,6 @@ public class EvaluationResultDTO {
 
     public void setDictionary(CurrentDictionaryDTO dictionary) {
         this.dictionary = dictionary;
-    }
-
-    public EvaluationDTO getEvaluation() {
-        return evaluation;
-    }
-
-    public void setEvaluation(EvaluationDTO evaluation) {
-        this.evaluation = evaluation;
     }
 
     public WordDTO getWord() {
