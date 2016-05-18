@@ -25,7 +25,8 @@ import static net.hrobotics.wb.dao.WordDAO.getWord;
         version = "v1",
         clientIds = {"271144171558-qduruebh6ok3oqtk9irgdkkavt3tsqcu.apps.googleusercontent.com",
                 com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID,
-                "271144171558-ksb3sgnne6pbsvvi7ajd5j8ito6k44ph.apps.googleusercontent.com"},
+                "271144171558-ksb3sgnne6pbsvvi7ajd5j8ito6k44ph.apps.googleusercontent.com",
+                "271144171558-ms1cj2o3ab4q60vbam5dl5f3fjtel65j.apps.googleusercontent.com"},
         audiences = {"271144171558-qduruebh6ok3oqtk9irgdkkavt3tsqcu.apps.googleusercontent.com"},
         namespace = @ApiNamespace(ownerDomain = "wb.hrobotics.net",
                 ownerName = "wb.hrobotics.net"))
