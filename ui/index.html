@@ -43,20 +43,20 @@
   </section>
 
   <section layout="column" layout-align="center center" ng-show="model.showDictionary">
-    <form layout="column" layout-align="center center" name="formCheckWrd">
+    <form layout="column" layout-align="center center" name="formCheckWrd" ng-show="model.word">
       <md-input-container class="inputWord">
         <label>{{model.dictionary.from}}</label>
-        <input ng-model="model.dictionary.word.translation" disabled>
+        <input ng-model="model.word.translation" disabled>
       </md-input-container>
 
       <md-input-container class="inputWord">
         <label>{{model.dictionary.to}}</label>
-        <input id="spelling" ng-model="model.dictionary.word.spelling" placeholder="" data-ng-disabled="model.evaluation">
-        <div class="tip" ng-class="{hidden:!model.dictionary.word.tip}">{{ml.txtTip}} {{model.dictionary.word.tip}}</div>
+        <input id="spelling" ng-model="model.word.spelling" placeholder="" data-ng-disabled="model.evaluation">
+        <div class="tip" ng-class="{hidden:!model.word.tip}">{{ml.txtTip}} {{model.word.tip}}</div>
       </md-input-container>
 
       <section layout="row" ng-show="!model.evaluation">
-        <md-button class="md-raised md-primary button" ng-click="checkWord()" data-ng-disabled="!model.dictionary.word.spelling">
+        <md-button class="md-raised md-primary button" ng-click="checkWord()" data-ng-disabled="!model.word.spelling">
           {{ml.btnCkeckWord}}
         </md-button>
 
@@ -87,15 +87,20 @@
     </div>
   </section>
 
+  <section layout="column" layout-align="center center" ng-show="model.emai && !model.dictionary">
+    <div class="message">{{ml.txtNoDictionary}}</div>
+  </section>
+
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-animate/angular-animate.js"></script>
   <script src="bower_components/angular-aria/angular-aria.js"></script>
   <script src="bower_components/angular-messages/angular-messages.js"></script>
   <script src="bower_components/angular-material/angular-material.js"></script>
   <script src="bower_components/angular-material-icons/angular-material-icons.js"></script>
-  <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
-  <script src="js/simulator.js"></script>
-  <script src="js/appcontroller.js"></script>
-  <script src="js/boot.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="app/wbservice.js"></script>
+  <script src="app/appcontroller.js"></script>
+  <script src="app/boot.js"></script>
+  <script src="https://apis.google.com/js/client.js?onload=init"></script>
 </body>
 </html>
