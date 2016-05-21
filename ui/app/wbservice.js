@@ -6,9 +6,17 @@
 
 function WBService()
 {
-  this.m_clientID   = '271144171558-ms1cj2o3ab4q60vbam5dl5f3fjtel65j.apps.googleusercontent.com'
-  this.m_scope      = 'https://www.googleapis.com/auth/userinfo.email'
-  this.m_serviceURL = '//localhost:8888/_ah/api'
+  if (location && location.hostname == 'localhost') {
+    // dev
+    this.m_clientID   = '271144171558-ms1cj2o3ab4q60vbam5dl5f3fjtel65j.apps.googleusercontent.com'
+    this.m_serviceURL = '//localhost:8888/_ah/api'
+  } else {
+    // prod
+    this.m_clientID   = '271144171558-ms1cj2o3ab4q60vbam5dl5f3fjtel65j.apps.googleusercontent.com'
+    this.m_serviceURL = '//localhost:8888/_ah/api'
+  }
+
+  this.m_scope = 'https://www.googleapis.com/auth/userinfo.email'
 }
 
 WBService.prototype.init = function(callback)

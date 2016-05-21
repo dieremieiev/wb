@@ -16,13 +16,6 @@ function AppController(scope, dialog, tm)
   scope.ml         = this.getML()
 
   this.showLoading(true)
-
-  // TODO - implement ENTER
-
-  // var self = this
-  // scope.onKeyDown = function(event) {
-  //   if (event.keyCode == 13) { self.onEnter() }
-  // }
 }
 
 AppController.prototype.init = function()
@@ -93,6 +86,11 @@ AppController.prototype.nextWord = function()
   this.updateView()
 }
 
+AppController.prototype.onKeyPress = function(event)
+{
+  if (event.keyCode == 13) { this.checkWord() }
+}
+
 AppController.prototype.repeatRequest = function()
 {
   var oa = this.lastRequest
@@ -133,10 +131,8 @@ AppController.prototype.checkWordImpl = function(spelling)
 
   var data = {
     'dictionaryId': m.dictionary.id,
-    'word': {
-      'id'      : m.word.id,
-      'spelling': spelling
-    }
+    'wordId'      : m.word.id,
+    'spelling'    : spelling
   }
 
   var self = this

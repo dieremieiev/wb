@@ -6,21 +6,20 @@ getUserState
 
 {
   'result': 0,
-  'body': {
+  'data': {
     'dictionary': {
-      'id': '4a0c7667-d971-45d0-8309-0e475a063164',
-      'active': 2,
-      'from': 'ru',
+      'id'     : '4a0c7667-d971-45d0-8309-0e475a063164',
+      'active' : 2,
+      'from'   : 'ru',
       'learned': 4,
-      'to': 'nl',
-      'total': 100,
+      'to'     : 'nl',
+      'total'  : 100
     },
-      'word': {
-        'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
-        'tip': 'такое же написание используется еще в значении "один"',
-        'translation': 'неопределенный артикль;один'
-      },
-
+    'word': {
+      'id'         : 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
+      'tip'        : 'такое же написание используется еще в значении "один"',
+      'translation': 'неопределенный артикль;один'
+    },
     'dictionaries': [
       { 'id': '5f6b2f41-d144-42aa-8a18-5a9e5e344f04', 'name': 'Словарь: 100 основных слов' },
       { 'id': '8a6d2093-57fb-41be-9517-fb4cad8229c2', 'name': 'Словарь: Числа' },
@@ -40,19 +39,19 @@ selectDictionary
 
 {
   'result': 0,
-  'body': {
+  'data': {
     'dictionary': {
-      'id': '4a0c7667-d971-45d0-8309-0e475a063164',
-      'active': 2,
-      'from': 'ru',
+      'id'     : '4a0c7667-d971-45d0-8309-0e475a063164',
+      'active' : 2,
+      'from'   : 'ru',
       'learned': 4,
-      'to': 'nl',
-      'total': 100,
-      'word': {
-        'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
-        'tip': 'такое же написание используется еще в значении "один"',
-        'translation': 'неопределенный артикль;один'
-      }
+      'to'     : 'nl',
+      'total'  : 100
+    },
+    'word': {
+      'id'         : 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
+      'tip'        : 'такое же написание используется еще в значении "один"',
+      'translation': 'неопределенный артикль;один'
     }
   }
 }
@@ -64,30 +63,28 @@ checkWord
 
 {
   'dictionaryId': '4a0c7667-d971-45d0-8309-0e475a063164',
-  'word': {
-    'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
-    'spelling': 'xxx'
-  }
+  'wordId'      : 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
+  'spelling'    : 'xxx'
 }
 
 {
   'result': 0,
-  'body': {
+  'data': {
     'dictionary': {
-      'id': '4a0c7667-d971-45d0-8309-0e475a063164',
-      'active': 2,
-      'from': 'ru',
+      'id'     : '4a0c7667-d971-45d0-8309-0e475a063164',
+      'active' : 2,
+      'from'   : 'ru',
       'learned': 4,
-      'to': 'nl',
-      'total': 100,
-      'word': {
-        'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
-        'tip': 'такое же написание используется еще в значении "один"',
-        'translation': 'неопределенный артикль;один'
-      }
+      'to'     : 'nl',
+      'total'  : 100
+    },
+    'word': {
+      'id'         : 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
+      'tip'        : 'такое же написание используется еще в значении "один"',
+      'translation': 'неопределенный артикль;один'
     },
     'evaluation': {
-      'result': 0,
+      'result'  : 0,
       'spelling': 'xxx'
     }
   }
