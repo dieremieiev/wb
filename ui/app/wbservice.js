@@ -12,8 +12,8 @@ function WBService()
     this.m_serviceURL = '//localhost:8888/_ah/api'
   } else {
     // prod
-    this.m_clientID   = '271144171558-ms1cj2o3ab4q60vbam5dl5f3fjtel65j.apps.googleusercontent.com'
-    this.m_serviceURL = '//localhost:8888/_ah/api'
+    this.m_clientID   = '271144171558-0nbds1repidmhbacroal6u6f631rpel6.apps.googleusercontent.com'
+    this.m_serviceURL = 'https://wb19032016.appspot.com/_ah/api'
   }
 
   this.m_scope = 'https://www.googleapis.com/auth/userinfo.email'
