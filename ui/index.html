@@ -31,7 +31,7 @@
 
   <div class="loading" ng-class="{hidden:!model.loading}">{{ml.txtLoading}}</div>
 
-  <section layout="column" layout-align="center center" ng-show="!model.loading && !model.email">
+  <section layout="column" layout-align="center center" ng-show="!model.loading && !model.email && !model.showError">
     <div class="message">{{ml.txtAppInfo}}</div>
     <md-button class="md-raised md-primary button" ng-click="ac.login()">
       <md-tooltip>{{ml.tipLogin}}</md-tooltip>
@@ -61,7 +61,7 @@
       </md-input-container>
 
       <section layout="row" ng-show="!model.evaluation">
-        <md-button class="md-raised md-primary button" ng-click="ac.checkWord()" data-ng-disabled="!model.word.spelling" ng-keypress="ac.checkWord()">
+        <md-button class="md-raised md-primary button" ng-click="ac.checkWord()" data-ng-disabled="!model.word.spelling">
           {{ml.btnCkeckWord}}
         </md-button>
 

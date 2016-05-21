@@ -131,7 +131,7 @@ AppController.prototype.checkWordImpl = function(spelling)
 
   var data = {
     'dictionaryId': m.dictionary.id,
-    'wordId'      : m.word.id,
+    'id'      : m.word.id, // wordId
     'spelling'    : spelling
   }
 
@@ -175,11 +175,11 @@ AppController.prototype.handleCheckWord = function(response)
 
   if (this.isDictionaryValid(response)) {
     if (this.isEvaluationValid(response)) {
-      m.evaluation = response.body.evaluation
-      m.nextWord   = response.body.word
+      m.evaluation = response.data.evaluation
+      m.nextWord   = response.data.word
     }
 
-    m.dictionary = response.body.dictionary
+    m.dictionary = response.data.dictionary
 
     m.showDictionary = true
     m.showError      = false
@@ -197,10 +197,10 @@ AppController.prototype.handleGetUserState = function(response)
     var bD = this.isDictionaryValid(response)
     var bW = this.isWordValid(response)
 
-    m.dictionaries = response.body.dictionaries
-    m.dictionary   = bD ? response.body.dictionary : null
-    m.word         = bW ? response.body.word       : null
-    m.email        = response.body.email
+    m.dictionaries   = response.data.dictionaries
+    m.dictionary     = bD ? response.data.dictionary : null
+    m.word           = bW ? response.data.word       : null
+    m.email          = response.data.email
 
     m.showDictionary = bD
     m.showError      = false
@@ -215,8 +215,8 @@ AppController.prototype.handleSelectDictionary = function(response)
   var m = this.scope.model
 
   if (this.isDictionaryValid(response)) {
-    m.dictionary     = response.body.dictionary
-    m.word           = this.isWordValid(response) ? response.body.word : null
+    m.dictionary     = response.data.dictionary
+    m.word           = this.isWordValid(response) ? response.data.word : null
 
     m.showDictionary = true
     m.showError      = false
@@ -228,27 +228,27 @@ AppController.prototype.handleSelectDictionary = function(response)
 
 AppController.prototype.isDictionaryValid = function(response)
 {
-  return response && (response.result == 0) && response.body
-                  && response.body.dictionary
+  return response && (response.result == 0) && response.data
+                  && response.data.dictionary
 }
 
 AppController.prototype.isEvaluationValid = function(response)
 {
-  return response && response.body && response.body.evaluation
-                  && response.body.evaluation.spelling
+  return response && response.data && response.data.evaluation
+                  && response.data.evaluation.spelling
 }
 
 AppController.prototype.isUserStateValid = function(response)
 {
-  return response && (response.result == 0) && response.body
-                  && response.body.dictionaries
-                  && response.body.email
+  return response && (response.result == 0) && response.data
+                  && response.data.dictionaries
+                  && response.data.email
 }
 
 AppController.prototype.isWordValid = function(response)
 {
-  return response && (response.result == 0) && response.body
-                  && response.body.word
+  return response && (response.result == 0) && response.data
+                  && response.data.word
 }
 
 AppController.prototype.loadUserState = function()
