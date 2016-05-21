@@ -86,9 +86,33 @@ AppController.prototype.nextWord = function()
   this.updateView()
 }
 
-AppController.prototype.onKeyPress = function(event)
+AppController.prototype.onEnter = function()
 {
-  if (event.keyCode == 13) { this.checkWord() }
+  var m = this.scope.model
+
+  if (m.showError) {
+    this.repeatRequest()
+    return
+  }
+
+  if (!m.loading && !m.email) {
+    this.login()
+    return
+  }
+
+  if (m.showDictionary && m.word) {
+    if (m.evaluation) {
+      this.nextWord()
+      return
+    }
+
+    if (m.word.spelling) {
+      this.checkWord()
+      return
+    }
+
+    this.suggestWord()
+  }
 }
 
 AppController.prototype.repeatRequest = function()

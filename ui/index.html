@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="bower_components/angular-material-icons/angular-material-icons.css">
   <link rel="stylesheet" href="css/app.css">
 </head>
-<body ng-app="app" ng-controller="AppController" ng-cloak>
+<body ng-app="app" ng-controller="AppController" ng-cloak ng-enter>
   <md-toolbar layout="row">
     <md-button>
       <h1>WB</h1>
@@ -31,19 +31,19 @@
 
   <div class="loading" ng-class="{hidden:!model.loading}">{{ml.txtLoading}}</div>
 
-  <section layout="column" layout-align="center center" ng-show="!model.loading && !model.email && !model.showError">
-    <div class="message">{{ml.txtAppInfo}}</div>
-    <md-button class="md-raised md-primary button" ng-click="ac.login()">
-      <md-tooltip>{{ml.tipLogin}}</md-tooltip>
-      {{ml.btnLogin}}
-    </md-button>
-  </section>
-
   <section layout="column" layout-align="center center" ng-show="model.showError">
     <div class="message">{{ml.errResponse}}</div>
     <md-button class="md-raised md-warn button" ng-click="ac.repeatRequest()">
       <md-tooltip>{{ml.tipRepeat}}</md-tooltip>
       {{ml.btnRepeat}}
+    </md-button>
+  </section>
+
+  <section layout="column" layout-align="center center" ng-show="!model.loading && !model.email && !model.showError">
+    <div class="message">{{ml.txtAppInfo}}</div>
+    <md-button class="md-raised md-primary button" ng-click="ac.login()">
+      <md-tooltip>{{ml.tipLogin}}</md-tooltip>
+      {{ml.btnLogin}}
     </md-button>
   </section>
 
@@ -56,7 +56,7 @@
 
       <md-input-container class="inputWord">
         <label>{{model.dictionary.to}}</label>
-        <input id="spelling" ng-model="model.word.spelling" placeholder="" data-ng-disabled="model.evaluation" ng-keypress="ac.onKeyPress($event)">
+        <input id="spelling" ng-model="model.word.spelling" placeholder="" data-ng-disabled="model.evaluation">
         <div class="tip" ng-class="{hidden:!model.word.tip}">{{ml.txtTip}} {{model.word.tip}}</div>
       </md-input-container>
 
