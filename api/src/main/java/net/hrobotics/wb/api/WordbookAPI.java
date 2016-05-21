@@ -213,7 +213,6 @@ public class WordbookAPI {
     private WordDTO toDTO(Word word) {
         WordDTO wordDTO = new WordDTO();
         wordDTO.setId(word.getId());
-        wordDTO.setSpelling(word.getSpelling());
         wordDTO.setTranslation(word.getTranslation());
         wordDTO.setTip(word.getTip());
         return wordDTO;

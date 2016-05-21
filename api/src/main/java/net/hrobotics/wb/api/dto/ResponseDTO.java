@@ -2,15 +2,15 @@ package net.hrobotics.wb.api.dto;
 
 public class ResponseDTO {
     private int result;
-    private Object body;
+    private Object data;
 
     public ResponseDTO(int result) {
         this.result = result;
     }
 
-    public ResponseDTO(int result, Object body) {
+    public ResponseDTO(int result, Object data) {
         this.result = result;
-        this.body = body;
+        this.data = data;
     }
 
     public ResponseDTO() {
@@ -24,11 +24,11 @@ public class ResponseDTO {
         this.result = result;
     }
 
-    public Object getBody() {
-        return body;
+    public Object getData() {
+        return data;
     }
 
-    public void setBody(Object body) {
-        this.body = body;
+    public void setData(Object data) {
+        this.data = data;
     }
 }
