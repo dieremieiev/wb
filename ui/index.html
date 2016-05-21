@@ -14,11 +14,11 @@
       <h1>WB</h1>
     </md-button>
     <span flex></span>
-    <md-select class="selectDictionary" placeholder="{{ml.txtSelectDictionary}}" ng-model="model.dictionary.id" ng-change="selectDictionary()" ng-show="model.dictionaries">
+    <md-select class="selectDictionary" placeholder="{{ml.txtSelectDictionary}}" ng-model="model.dictionary.id" ng-change="ac.selectDictionary()" ng-show="model.dictionaries">
       <md-option ng-value="dictionary.id" ng-repeat="dictionary in model.dictionaries">{{dictionary.name}}</md-option>
     </md-select>
     <span flex></span>
-    <md-button aria-label="logout" ng-click="askLogout()" ng-show="model.email">
+    <md-button aria-label="logout" ng-click="ac.askLogout()" ng-show="model.email">
       <md-tooltip>{{ml.tipExit}}</md-tooltip>
       <ng-md-icon class="hauto" icon="logout" size="48"></ng-md-icon>
     </md-button>
@@ -28,7 +28,7 @@
 
   <section layout="column" layout-align="center center" ng-show="!model.loading && !model.email">
     <div class="message">{{ml.txtAppInfo}}</div>
-    <md-button class="md-raised md-primary button" ng-click="login()">
+    <md-button class="md-raised md-primary button" ng-click="ac.login()">
       <md-tooltip>{{ml.tipLogin}}</md-tooltip>
       {{ml.btnLogin}}
     </md-button>
@@ -36,7 +36,7 @@
 
   <section layout="column" layout-align="center center" ng-show="model.showError">
     <div class="message">{{ml.errResponse}}</div>
-    <md-button class="md-raised md-warn button" ng-click="repeatRequest()">
+    <md-button class="md-raised md-warn button" ng-click="ac.repeatRequest()">
       <md-tooltip>{{ml.tipRepeat}}</md-tooltip>
       {{ml.btnRepeat}}
     </md-button>
@@ -56,11 +56,11 @@
       </md-input-container>
 
       <section layout="row" ng-show="!model.evaluation">
-        <md-button class="md-raised md-primary button" ng-click="checkWord()" data-ng-disabled="!model.word.spelling">
+        <md-button class="md-raised md-primary button" ng-click="ac.checkWord()" data-ng-disabled="!model.word.spelling">
           {{ml.btnCkeckWord}}
         </md-button>
 
-        <md-button class="md-raised button" ng-click="suggestWord()">
+        <md-button class="md-raised button" ng-click="ac.suggestWord()">
           {{ml.btnSuggestWord}}
         </md-button>
       </section>
@@ -74,7 +74,7 @@
           <div>{{ml.txtCorrectVariant}} {{model.evaluation.spelling}}</div>
         </div>
 
-        <md-button class="md-raised md-primary button" ng-click="nextWord()">
+        <md-button class="md-raised md-primary button" ng-click="ac.nextWord()">
           {{ml.btnContinue}}
         </md-button>
       </section>

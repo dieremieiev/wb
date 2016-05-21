@@ -1,8 +1,8 @@
 ================================================================================
 ```
-{
-  'action': 'getUserState'
-}
+getUserState
+
+{}
 
 {
   'result': 0,
@@ -34,12 +34,9 @@
 
 ================================================================================
 ```
-{
-  'action': 'selectDictionary',
-  'body': {
-    'dictionaryId': '4a0c7667-d971-45d0-8309-0e475a063164'
-  }
-}
+selectDictionary
+
+{ 'dictionaryId': '4a0c7667-d971-45d0-8309-0e475a063164' }
 
 {
   'result': 0,
@@ -63,14 +60,13 @@
 
 ================================================================================
 ```
+checkWord
+
 {
-  'action': 'checkWord',
-  'body': {
-     'dictionaryId': '4a0c7667-d971-45d0-8309-0e475a063164',
-     'word': {
-       'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
-       'spelling': 'xxx'
-      }
+  'dictionaryId': '4a0c7667-d971-45d0-8309-0e475a063164',
+  'word': {
+    'id': 'bdfee856-471a-42d8-abc2-3e3a4de1ca6d',
+    'spelling': 'xxx'
   }
 }
 

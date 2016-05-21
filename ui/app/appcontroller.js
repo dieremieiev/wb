@@ -141,7 +141,7 @@ AppController.prototype.checkWordImpl = function(spelling)
 
   var self = this
 
-  this.post('checkWord', null, function(response) {
+  this.post('checkWord', data, function(response) {
     self.handleCheckWord(response)
   })
 }
