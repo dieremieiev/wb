@@ -41,9 +41,9 @@ WBService.prototype.init = function(callback)
 WBService.prototype.login = function(mode, callback)
 {
   gapi.auth.authorize({
-    client_id: this.m_clientID,
-    scope    : this.m_scope,
-    immediate: mode
+    client_id     : this.m_clientID,
+    scope         : this.m_scope,
+    immediate     : mode
   }, function(response) {
     callback(response && !response.error && response.access_token)
   });
@@ -51,10 +51,8 @@ WBService.prototype.login = function(mode, callback)
 
 WBService.prototype.logout = function()
 {
-  // TODO: do NOT work with localhost => check on real domain
-
-  gapi.auth.setToken(null)
   gapi.auth.signOut()
+  gapi.auth.setToken(null)
 }
 
 WBService.prototype.post = function(action, data, callback)
