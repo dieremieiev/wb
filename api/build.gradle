@@ -5,7 +5,7 @@ apply plugin: 'appengine'
 //noinspection GroovyUnusedAssignment
 def appId = "wb19032016"
 def appEmail = "dmytro.ieremieiev@gmail.com"
-def appengineVersion = "1.9.34"
+def appengineVersion = "1.9.37"
 
 repositories {
     mavenLocal()
