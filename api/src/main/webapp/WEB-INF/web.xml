@@ -1,5 +1,9 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
     <servlet>
+        <servlet-name>telegramWebHook</servlet-name>
+        <servlet-class>net.hrobotics.wb.bot.WBBotServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SystemServiceServlet</servlet-name>
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
@@ -10,5 +14,9 @@
     <servlet-mapping>
         <servlet-name>SystemServiceServlet</servlet-name>
         <url-pattern>/_ah/spi/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>telegramWebHook</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 </web-app>

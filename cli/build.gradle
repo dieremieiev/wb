@@ -17,6 +17,7 @@ dependencies {
     compile 'net.hrobotics.wb:admin:v1-1.22.0-SNAPSHOT'
     compile 'net.hrobotics.wb:wordbook:v1-1.22.0-SNAPSHOT'
     compile 'org.yaml:snakeyaml:1.17'
+    compile 'org.jsoup:jsoup:1.8.3'
 }
 
 //noinspection GroovyUnusedAssignment

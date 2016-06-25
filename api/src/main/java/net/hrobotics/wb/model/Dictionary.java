@@ -42,6 +42,10 @@ public class Dictionary {
     public Dictionary() {
     }
 
+    public Dictionary(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

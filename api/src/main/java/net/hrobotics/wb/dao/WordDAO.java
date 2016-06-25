@@ -5,6 +5,7 @@ import net.hrobotics.wb.model.Dictionary;
 import net.hrobotics.wb.model.Word;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ import static net.hrobotics.wb.dao.DictionaryDAO.DICTIONARY_KIND;
 public class WordDAO {
     private static DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
     static final String WORD_KIND = "word";
+    static final String TRANSLATION_KIND = "translation";
 
     public static List<Word> putWords(Dictionary dictionary, List<Word> words) {
         List<Entity> wordsEntities = new ArrayList<>();
@@ -24,10 +26,23 @@ public class WordDAO {
                 id = UUID.randomUUID().toString();
                 word.setId(id);
             }
-            wordsEntities.add(toEntity(dictionary, word));
+            wordsEntities.add(toWordEntity(dictionary, word));
+            wordsEntities.add(toTranslationEntity(dictionary, word));
         }
         datastoreService.put(wordsEntities);
         return words;
+    }
+
+    public static  Word putWord(Dictionary dictionary, Word word) {
+        String id = word.getId();
+        if (id == null) {
+            id = UUID.randomUUID().toString();
+            word.setId(id);
+        }
+        datastoreService.put(Arrays.asList(
+                toWordEntity(dictionary, word),
+                toTranslationEntity(dictionary, word)));
+        return word;
     }
 
     public static void removeWords(Dictionary dictionary) {
@@ -40,6 +55,19 @@ public class WordDAO {
             entity = datastoreService.get(new KeyFactory.Builder(
                     DICTIONARY_KIND, dictionaryId)
                     .addChild(WORD_KIND, id)
+                    .getKey());
+        } catch (EntityNotFoundException e) {
+            return null;
+        }
+        return toWord(entity);
+    }
+
+    public static Word getWordBySpelling(String dictionaryId, String spelling) {
+        Entity entity;
+        try {
+            entity = datastoreService.get(new KeyFactory.Builder(
+                    DICTIONARY_KIND, dictionaryId)
+                    .addChild(TRANSLATION_KIND, spelling)
                     .getKey());
         } catch (EntityNotFoundException e) {
             return null;
@@ -75,9 +103,21 @@ public class WordDAO {
         return word;
     }
 
-    private static Entity toEntity(Dictionary dictionary, Word word) {
+    private static Entity toWordEntity(Dictionary dictionary, Word word) {
         String dictionaryId = dictionary.getId();
         Entity entity = new Entity(WORD_KIND, word.getId(),
+                key(DICTIONARY_KIND, dictionaryId));
+        entity.setProperty("spelling", word.getSpelling());
+        entity.setProperty("id", word.getId());
+        entity.setProperty("dictionaryId", dictionaryId);
+        entity.setProperty("tip", word.getTip());
+        entity.setProperty("translation", word.getTranslation());
+        return entity;
+    }
+
+    private static Entity toTranslationEntity(Dictionary dictionary, Word word) {
+        String dictionaryId = dictionary.getId();
+        Entity entity = new Entity(TRANSLATION_KIND, word.getSpelling(),
                 key(DICTIONARY_KIND, dictionaryId));
         entity.setProperty("spelling", word.getSpelling());
         entity.setProperty("id", word.getId());

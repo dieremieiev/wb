@@ -27,6 +27,11 @@ public class Word {
     public Word() {
     }
 
+    public Word(String spelling, String translation) {
+        this.spelling = spelling;
+        this.translation = translation;
+    }
+
     public String getId() {
         return id;
     }
